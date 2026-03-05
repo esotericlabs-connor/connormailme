@@ -160,7 +160,7 @@ body {
 /* Hero Section: PNW Background */
 .hero {
     background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
-                url('../assets/background/background-light.jpg');
+                url('/assets/seattle-day.jpg');
     background-size: cover;
     background-position: center;
     min-height: 80vh;
@@ -174,7 +174,7 @@ body {
 
 body.dark-mode .hero {
     background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
-                url('../assets/background/background-dark.jpg');
+                url('/assets/seattle-night.jpg');
     background-size: cover;
     background-position: center;
 }
