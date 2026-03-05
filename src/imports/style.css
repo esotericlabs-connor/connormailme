@@ -1,0 +1,272 @@
+/* PNW-Inspired Color Palette */
+:root {
+    --pnw-dark: #1a2332;       /* Dark blue-gray */
+    --pnw-green: #2d5a4a;      /* Forest green */
+    --pnw-blue: #3d5a80;       /* Deep blue */
+    --pnw-gray: #6c757d;       /* Soft gray */
+    --pnw-light: #f8f9fa;      /* Off-white */
+    
+    /* Light Mode */
+    --dark: #1a2332;
+    --light: #f8f9fa;
+    --primary: #3d5a80;
+    --secondary: #2d5a4a;
+    --bg-color: #f8f9fa;
+    --text-color: #1a2332;
+    --header-bg: #1a2332;
+}
+
+body.dark-mode {
+    /* Dark Mode */
+    --dark: #0f1419;
+    --light: #e8eaed;
+    --primary: #5a7fa4;
+    --secondary: #3d7a5a;
+    --bg-color: #1a1f2e;
+    --text-color: #e8eaed;
+    --header-bg: #0f1419;
+}
+
+header {
+    background-color: var(--header-bg);
+    color: var(--light);
+    padding: 1rem 0;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+    transition: background-color 0.3s ease;
+}
+
+nav {
+    display: flex;
+    justify-content: center;
+}
+
+.nav-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    position: relative;
+}
+
+nav ul {
+    display: flex;
+    justify-content: center;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+nav ul li {
+    margin: 0 1.5rem;
+}
+
+nav ul li a {
+    color: var(--light);
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s;
+    padding: 0.5rem 1rem;
+}
+
+nav ul li a:hover {
+    color: var(--primary);
+}
+
+.theme-toggle {
+    position: absolute;
+    right: 2rem;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: var(--light);
+    cursor: pointer;
+    transition: transform 0.3s ease, color 0.3s ease;
+    padding: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.theme-toggle:hover {
+    color: var(--primary);
+    transform: scale(1.2) rotate(20deg);
+}
+
+.theme-toggle i {
+    transition: transform 0.3s ease;
+}
+
+body.dark-mode .theme-toggle i::before {
+    content: '\f185'; /* sun icon */
+}
+
+/* IP Info Display */
+.ip-info {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    background-color: rgba(26, 35, 50, 0.9);
+    color: #f8f9fa;
+    padding: 1rem;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    z-index: 999;
+    border: 1px solid rgba(61, 90, 128, 0.3);
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+    min-width: 200px;
+}
+
+body.dark-mode .ip-info {
+    background-color: rgba(15, 20, 25, 0.95);
+    color: #e8eaed;
+    border-color: rgba(90, 127, 164, 0.3);
+}
+
+.ip-label, .vpn-label {
+    padding: 0.25rem 0;
+    font-family: 'Courier New', monospace;
+    letter-spacing: 0.5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+#vpn-value {
+    font-weight: bold;
+}
+
+#vpn-value.vpn-detected {
+    color: #ff6b6b;
+}
+
+#vpn-value.vpn-not-detected {
+    color: #51cf66;
+}
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    margin: 0;
+    padding: 0;
+    color: var(--text-color);
+    background-color: var(--bg-color);
+    line-height: 1.6;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Hero Section: PNW Background */
+.hero {
+    background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
+                url('../assets/background/background-light.jpg');
+    background-size: cover;
+    background-position: center;
+    min-height: 80vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: white;
+    transition: background-image 0.6s ease;
+}
+
+body.dark-mode .hero {
+    background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+                url('../assets/background/background-dark.jpg');
+    background-size: cover;
+    background-position: center;
+}
+
+.hero-content {
+    max-width: 600px;
+    padding: 2rem;
+    background-color: rgba(26, 35, 50, 0.8);
+    border-radius: 8px;
+    transition: background-color 0.3s ease;
+}
+
+.about-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.about-content {
+    padding: 2rem;
+    transition: background-color 0.3s ease;
+}
+
+body.dark-mode .about-content {
+    background-color: #24293a;
+}
+
+.about-content i {
+    font-size: 4rem;
+    color: var(--secondary);
+    margin-bottom: 1rem;
+    transition: color 0.3s ease;
+}
+
+/* PNW-themed buttons */
+.cta-button {
+    background-color: var(--primary);
+    color: white;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.cta-button:hover {
+    background-color: var(--secondary);
+}
+
+section {
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+body.dark-mode section {
+    background-color: #1a1f2e;
+    color: #e8eaed;
+}
+
+h1, h2, h3 {
+    transition: color 0.3s ease;
+}
+
+body.dark-mode h1, 
+body.dark-mode h2, 
+body.dark-mode h3 {
+    color: #e8eaed;
+}
+
+.github-card, .link-card {
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+body.dark-mode .github-card,
+body.dark-mode .link-card {
+    background-color: #24293a;
+    border-color: #3d5a80;
+}
+
+footer {
+    background-color: var(--header-bg);
+    color: var(--light);
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.social-icons {
+    display: flex;
+    justify-content: center;
+    padding: 1rem;
+}
+
+.social-icons a {
+    color: var(--light);
+    margin: 0 1rem;
+    font-size: 1.5rem;
+}

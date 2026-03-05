@@ -1,0 +1,33 @@
+@import './fonts.css';
+@import './tailwind.css';
+@import './theme.css';
+
+/* Custom styles for the portfolio */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: #ffffff;
+  color: #1a2332;
+}
+
+body.dark-mode {
+  background-color: #1a1f2e;
+  color: #e8eaed;
+}
+
+/* Ensure smooth transitions but not for transforms */
+* {
+  transition-property: background-color, border-color, color, opacity;
+  transition-duration: 300ms;
+  transition-timing-function: ease-in-out;
+}
+
+/* Override for animations and transforms that shouldn't transition colors */
+[class*="animate-"],
+[class*="motion-"],
+button,
+a {
+  transition-property: background-color, border-color, color, opacity, transform, scale;
+}

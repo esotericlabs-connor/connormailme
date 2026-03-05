@@ -1,5 +1,11 @@
-# React basic
 
-[Azure Static Web Apps](https://docs.microsoft.com/azure/static-web-apps/overview) allows you to easily build [React](https://reactjs.org/) apps in minutes. Use this repo with the [React quickstart](https://docs.microsoft.com/azure/static-web-apps/getting-started?tabs=react) to build and customize a new static site.
+  # Untitled
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+  This is a code bundle for Untitled. The original project is available at https://www.figma.com/design/MJVEKhBdjQbMQr1XsRm4r1/Untitled.
+
+  ## Running the code
+
+  Run `npm i` to install the dependencies.
+
+  Run `npm run dev` to start the development server.
+  
