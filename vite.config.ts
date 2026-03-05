@@ -19,4 +19,9 @@ export default defineConfig({
 
   // File types to support raw imports. Never add .css, .tsx, or .ts files to this.
   assetsInclude: ['**/*.svg', '**/*.csv'],
+
+  // Configure build output directory for Azure Static Web Apps
+  build: {
+    outDir: 'build',
+  },
 })
