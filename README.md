@@ -1,11 +1,44 @@
+# Connor Remsen - Portfolio Website
 
-  # Untitled
+Modern portfolio website.
 
-  This is a code bundle for Untitled. The original project is available at https://www.figma.com/design/MJVEKhBdjQbMQr1XsRm4r1/Untitled.
+## Local Development
 
-  ## Running the code
+```bash
+# Install dependencies
+npm install
 
-  Run `npm i` to install the dependencies.
+# Run development server
+npm run dev
 
-  Run `npm run dev` to start the development server.
-  
+# Build for production
+npm run build
+```
+
+## Deployment to Azure Static Web Apps
+
+This site is designed to deploy to Azure Static Web Apps via GitHub.
+
+### Project Structure
+
+```
+/public/assets/        # Static assets (images, logos)
+/src/app/             # Application components
+/src/styles/          # Global styles and theme
+```
+
+### Build Scripts
+
+The `package.json` includes the necessary build script:
+- `npm run build` - Creates production build in `/dist` directory
+
+## Project Sections
+
+- **Home** - Hero section with Seattle skyline
+- **Projects** - Featured GitHub projects (OpenKeyFlow, MONOLITH)
+- **About** - Professional background and expertise
+- **Contact** - JotForm integration for support requests
+
+## License
+
+All rights reserved - Connor Remsen

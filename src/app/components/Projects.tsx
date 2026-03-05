@@ -1,19 +1,17 @@
 import { motion } from "motion/react";
 import { ExternalLink, Github } from "lucide-react";
-import openKeyFlowLogo from "figma:asset/0174b31b3bfdd98bae816a2cc3dfa4977cc9a035.png";
-import monolithLogo from "figma:asset/9a70cfc474ffe11e765cb8e089fe852ce0938092.png";
 
 const projects = [
   {
     title: "OpenKeyFlow",
     description: "A free, open-source text expander that boosts productivity with customizable shortcuts and cross-platform support.",
-    logo: openKeyFlowLogo,
+    logo: "/assets/openkeyflow-logo.png",
     link: "https://github.com/esotericlabs-connor/OpenKeyFlow",
   },
   {
     title: "MONOLITH",
     description: "A secure Linux router solution focused on privacy, performance, and comprehensive network protection.",
-    logo: monolithLogo,
+    logo: "/assets/monolith-logo.png",
     link: "https://github.com/esotericlabs-connor/MONOLITH",
   },
 ];

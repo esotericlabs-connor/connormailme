@@ -1,8 +1,6 @@
 import { motion, AnimatePresence } from "motion/react";
 import { Shield, Server, Brain, Lock, Code, Users } from "lucide-react";
 import { useTheme } from "./ThemeProvider";
-import seattleDay from "figma:asset/89770c053ab8d9f481051aa6755ec38b7b90eda6.png";
-import seattleNight from "figma:asset/242c319a6863321a8ec66d8411d7da7476c955fd.png";
 
 const expertise = [
   {
@@ -61,8 +59,8 @@ export function About() {
               transition={{ duration: 0.8 }}
               className="absolute inset-0 bg-cover bg-center"
               style={{
-                backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url(${seattleNight})`,
-                backgroundPosition: "center center",
+                backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url(/assets/seattle-night.png)`,
+                backgroundPosition: "center 40%",
               }}
             />
           ) : (
@@ -74,8 +72,8 @@ export function About() {
               transition={{ duration: 0.8 }}
               className="absolute inset-0 bg-cover bg-center"
               style={{
-                backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(${seattleDay})`,
-                backgroundPosition: "center center",
+                backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(/assets/seattle-day.png)`,
+                backgroundPosition: "center 40%",
               }}
             />
           )}
