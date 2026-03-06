@@ -64,22 +64,6 @@ All images are stored in `/public/assets/` and referenced using absolute paths:
 The `package.json` includes the necessary build script:
 - `npm run build` - Creates production build in `/dist` directory
 
-## Features
-
-- 🌓 Dark/Light mode with smooth transitions
-- 📱 Fully responsive mobile design
-- 🏔️ Dynamic Seattle skyline backgrounds
-- ⚡ Smooth page transitions and animations
-- 🎨 Custom branding and project showcases
-- 🔒 VPN status indicator in header
-- 🎯 Icon-based navigation
-
-## Project Sections
-
-- **Home** - Hero section with Seattle skyline
-- **Projects** - Featured GitHub projects (OpenKeyFlow, MONOLITH)
-- **About** - Professional background and expertise
-- **Contact** - JotForm integration for support requests
 
 ## License
 
