@@ -1,5 +1,6 @@
 import { Hero } from "./Hero";
 import { Projects } from "./Projects";
+import { motion } from "motion/react";
 
 export function Home() {
   return (
