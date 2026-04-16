@@ -41,16 +41,36 @@ export function Header() {
   }, [isMobileMenuOpen]);
 
   useEffect(() => {
-    // Simulate fetching IP info
-    // In production, this would call an actual API like ipapi.co or similar
-    setTimeout(() => {
-      setIpInfo({
-        ip: "192.168.1.100",
-        location: "Seattle, WA",
-        vpnDetected: false,
-      });
-      setIsLoading(false);
-    }, 1000);
+    const fetchIPInfo = async () => {
+      try {
+        const ipRes = await fetch("https://ipapi.co/json/");
+        const ipData = await ipRes.json();
+
+        const ip: string = ipData.ip ?? "Unknown";
+        const city: string = ipData.city ?? "";
+        const region: string = ipData.region_code ?? ipData.region ?? "";
+        const location = city && region ? `${city}, ${region}` : city || region || ipData.country_name || "Unknown";
+
+        let vpnDetected = false;
+        try {
+          const vpnRes = await fetch(`https://proxycheck.io/v2/${ip}?vpn=1`);
+          const vpnData = await vpnRes.json();
+          if (vpnData[ip]) {
+            vpnDetected = vpnData[ip].proxy === "yes";
+          }
+        } catch {
+          // VPN check failed, leave as false
+        }
+
+        setIpInfo({ ip, location, vpnDetected });
+      } catch {
+        setIpInfo({ ip: "Unknown", location: "Unknown", vpnDetected: false });
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchIPInfo();
   }, []);
 
   const scrollToSection = (id: string) => {

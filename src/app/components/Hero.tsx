@@ -20,7 +20,7 @@ export function Hero() {
             transition={{ duration: 0.8 }}
             className="absolute inset-0 bg-cover bg-center"
             style={{
-              backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(/assets/seattle-night.png)`,
+              backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(/assets/seattle-night.jpg)`,
               backgroundPosition: "center 40%",
             }}
           />
@@ -33,7 +33,7 @@ export function Hero() {
             transition={{ duration: 0.8 }}
             className="absolute inset-0 bg-cover bg-center"
             style={{
-              backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url(/assets/seattle-day.png)`,
+              backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url(/assets/seattle-day.jpg)`,
               backgroundPosition: "center 40%",
             }}
           />
