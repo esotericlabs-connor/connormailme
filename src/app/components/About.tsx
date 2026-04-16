@@ -39,17 +39,11 @@ export function About() {
   const { isDarkMode } = useTheme();
   
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: 0.5 }}
-      className="pt-16"
-    >
+    <div className="pt-16">
       {/* Hero Section */}
       <section className="relative py-12 md:py-20 px-4 overflow-hidden">
         {/* Background Images with Fade Transition */}
-        <AnimatePresence mode="wait">
+        <AnimatePresence mode="wait" initial={false}>
           {isDarkMode ? (
             <motion.div
               key="dark-about"
@@ -59,7 +53,7 @@ export function About() {
               transition={{ duration: 0.8 }}
               className="absolute inset-0 bg-cover bg-center"
               style={{
-                backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url(/assets/seattle-night.png)`,
+                backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url(/assets/seattle-night.jpg)`,
                 backgroundPosition: "center 40%",
               }}
             />
@@ -72,7 +66,7 @@ export function About() {
               transition={{ duration: 0.8 }}
               className="absolute inset-0 bg-cover bg-center"
               style={{
-                backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(/assets/seattle-day.png)`,
+                backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(/assets/seattle-day.jpg)`,
                 backgroundPosition: "center 40%",
               }}
             />
@@ -204,6 +198,6 @@ export function About() {
           </motion.div>
         </div>
       </section>
-    </motion.div>
+    </div>
   );
 }

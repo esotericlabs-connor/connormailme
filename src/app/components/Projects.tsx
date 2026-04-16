@@ -51,6 +51,7 @@ export function Projects() {
                 <img
                   src={project.logo}
                   alt={project.title}
+                  loading="eager"
                   className="max-w-full max-h-full object-contain group-hover:scale-110 transition-transform duration-500"
                 />
               </div>

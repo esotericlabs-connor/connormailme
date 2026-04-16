@@ -1,15 +1,9 @@
 import { Hero } from "./Hero";
 import { Projects } from "./Projects";
-import { motion } from "motion/react";
 
 export function Home() {
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: 0.5 }}
-    >
+    <div>
       <Hero />
       
       <section className="py-16 px-4 bg-white dark:bg-[#1a1f2e] transition-colors duration-300">
@@ -29,6 +23,6 @@ export function Home() {
       </section>
 
       <Projects />
-    </motion.div>
+    </div>
   );
 }

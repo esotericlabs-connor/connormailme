@@ -10,7 +10,7 @@ export function Hero() {
       className="relative min-h-[80vh] flex items-center justify-center pt-16 overflow-hidden"
     >
       {/* Background Images with Fade Transition */}
-      <AnimatePresence mode="wait">
+      <AnimatePresence mode="wait" initial={false}>
         {isDarkMode ? (
           <motion.div
             key="dark"
