@@ -1,6 +1,6 @@
-import { Moon, Sun, MapPin, Globe, Menu, X, Home, User, Github, Linkedin, Mail } from "lucide-react";
+import { Moon, Sun, MapPin, Globe, Menu, X, Home, User, Github, Linkedin, Mail, Cloud, CloudRain, CloudSnow, CloudSun, CloudLightning, Clock } from "lucide-react";
 import { useTheme } from "./ThemeProvider";
-import { useEffect, useState } from "react";
+import { useEffect, useState, type ComponentType } from "react";
 import { Link, useLocation } from "react-router";
 import { motion, AnimatePresence } from "motion/react";
 import { navLinks } from "../../config";
@@ -8,6 +8,24 @@ import { navLinks } from "../../config";
 interface IPInfo {
   ip: string;
   location: string;
+  timezone: string;
+  latitude: number;
+  longitude: number;
+}
+
+interface WeatherInfo {
+  tempF: number;
+  code: number;
+}
+
+function weatherIcon(code: number): ComponentType<{ className?: string }> {
+  if (code === 0) return Sun;
+  if (code <= 2) return CloudSun;
+  if (code === 3 || (code >= 45 && code <= 48)) return Cloud;
+  if (code >= 51 && code <= 67) return CloudRain;
+  if (code >= 80 && code <= 82) return CloudRain;
+  if ((code >= 71 && code <= 77) || code === 85 || code === 86) return CloudSnow;
+  return CloudLightning;
 }
 
 export function Header() {
@@ -15,7 +33,12 @@ export function Header() {
   const [ipInfo, setIpInfo] = useState<IPInfo>({
     ip: "Loading...",
     location: "Loading...",
+    timezone: "",
+    latitude: 0,
+    longitude: 0,
   });
+  const [weather, setWeather] = useState<WeatherInfo | null>(null);
+  const [localTime, setLocalTime] = useState<string>("");
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const location = useLocation();
 
@@ -37,12 +60,13 @@ export function Header() {
   useEffect(() => {
     const fetchIPInfo = async () => {
       try {
-        // Step 1: get public IP from a highly-compatible endpoint
         const ipRes = await fetch("https://api.ipify.org?format=json");
         const { ip } = await ipRes.json();
 
-        // Step 2: location lookup using the explicit IP
         let location = "Unknown";
+        let timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+        let latitude = 0;
+        let longitude = 0;
         try {
           const locRes = await fetch(`https://ipapi.co/${ip}/json/`);
           const locData = await locRes.json();
@@ -52,18 +76,57 @@ export function Header() {
             city && region
               ? `${city}, ${region}`
               : city || region || locData.country_name || "Unknown";
+          timezone = locData.timezone || timezone;
+          latitude = locData.latitude ?? 0;
+          longitude = locData.longitude ?? 0;
         } catch {
-          // location lookup failed, leave as Unknown
+          // location lookup failed
         }
 
-        setIpInfo({ ip, location });
+        setIpInfo({ ip, location, timezone, latitude, longitude });
+
+        // Fetch weather from Open-Meteo (free, no key required)
+        if (latitude && longitude) {
+          try {
+            const wRes = await fetch(
+              `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current_weather=true&temperature_unit=fahrenheit`
+            );
+            const wData = await wRes.json();
+            if (wData.current_weather) {
+              setWeather({
+                tempF: Math.round(wData.current_weather.temperature),
+                code: wData.current_weather.weathercode,
+              });
+            }
+          } catch {
+            // weather fetch failed, show nothing
+          }
+        }
       } catch {
-        setIpInfo({ ip: "Unknown", location: "Unknown" });
+        setIpInfo({ ip: "Unknown", location: "Unknown", timezone: "", latitude: 0, longitude: 0 });
       }
     };
 
     fetchIPInfo();
   }, []);
+
+  // Live clock ticking in the visitor's detected timezone
+  useEffect(() => {
+    const tick = () => {
+      if (!ipInfo.timezone) return;
+      setLocalTime(
+        new Intl.DateTimeFormat("en-US", {
+          hour: "numeric",
+          minute: "2-digit",
+          hour12: true,
+          timeZone: ipInfo.timezone,
+        }).format(new Date())
+      );
+    };
+    tick();
+    const id = setInterval(tick, 1000);
+    return () => clearInterval(id);
+  }, [ipInfo.timezone]);
 
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id);
@@ -112,6 +175,21 @@ export function Header() {
                 <MapPin className="w-3.5 h-3.5 text-[#3d5a80] dark:text-[#5a7fa4]" />
                 <span>{ipInfo.location}</span>
               </div>
+              {localTime && (
+                <div className="flex items-center gap-1.5">
+                  <Clock className="w-3.5 h-3.5 text-[#3d5a80] dark:text-[#5a7fa4]" />
+                  <span className="font-mono">{localTime}</span>
+                </div>
+              )}
+              {weather && (() => {
+                const WeatherIcon = weatherIcon(weather.code);
+                return (
+                  <div className="flex items-center gap-1.5">
+                    <WeatherIcon className="w-3.5 h-3.5 text-[#3d5a80] dark:text-[#5a7fa4]" />
+                    <span>{weather.tempF}°F</span>
+                  </div>
+                );
+              })()}
             </motion.div>
           </div>
 
@@ -120,71 +198,67 @@ export function Header() {
             CR
           </div>
           <ul className="hidden lg:flex items-center gap-8">
-            {isHome ? (
-              <>
-                <li>
-                  <button
-                    onClick={() => scrollToSection("home")}
-                    className="text-gray-200 hover:text-[#5a7fa4] transition-colors duration-150 flex items-center gap-2"
-                  >
-                    <Home className="w-5 h-5" />
-                    <span className="text-sm font-medium">Home</span>
-                  </button>
-                </li>
-                <li>
-                  <Link
-                    to="/about"
-                    className="text-gray-200 hover:text-[#5a7fa4] transition-colors duration-150 flex items-center gap-2"
-                  >
-                    <User className="w-5 h-5" />
-                    <span className="text-sm font-medium">About</span>
-                  </Link>
-                </li>
-                <li>
-                  <a
-                    href={navLinks.github}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-gray-200 hover:text-[#5a7fa4] transition-colors duration-150 flex items-center gap-2"
-                  >
-                    <Github className="w-5 h-5" />
-                    <span className="text-sm font-medium">GitHub</span>
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href={navLinks.linkedin}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-gray-200 hover:text-[#5a7fa4] transition-colors duration-150 flex items-center gap-2"
-                  >
-                    <Linkedin className="w-5 h-5" />
-                    <span className="text-sm font-medium">LinkedIn</span>
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href={navLinks.contact}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-gray-200 hover:text-[#5a7fa4] transition-colors duration-150 flex items-center gap-2"
-                  >
-                    <Mail className="w-5 h-5" />
-                    <span className="text-sm font-medium">Contact</span>
-                  </a>
-                </li>
-              </>
-            ) : (
-              <li>
-                <Link
-                  to="/"
-                  className="text-gray-200 hover:text-[#5a7fa4] transition-colors duration-150 flex items-center gap-2 font-semibold"
+            <li>
+              {isHome ? (
+                <button
+                  onClick={() => scrollToSection("home")}
+                  className="text-gray-200 hover:text-[#5a7fa4] transition-colors duration-150 flex items-center gap-2"
                 >
                   <Home className="w-5 h-5" />
-                  <span className="text-sm">Back to Home</span>
+                  <span className="text-sm font-medium">Home</span>
+                </button>
+              ) : (
+                <Link
+                  to="/"
+                  className="text-gray-200 hover:text-[#5a7fa4] transition-colors duration-150 flex items-center gap-2"
+                >
+                  <Home className="w-5 h-5" />
+                  <span className="text-sm font-medium">Home</span>
                 </Link>
-              </li>
-            )}
+              )}
+            </li>
+            <li>
+              <Link
+                to="/about"
+                className="text-gray-200 hover:text-[#5a7fa4] transition-colors duration-150 flex items-center gap-2"
+              >
+                <User className="w-5 h-5" />
+                <span className="text-sm font-medium">About</span>
+              </Link>
+            </li>
+            <li>
+              <a
+                href={navLinks.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-200 hover:text-[#5a7fa4] transition-colors duration-150 flex items-center gap-2"
+              >
+                <Github className="w-5 h-5" />
+                <span className="text-sm font-medium">GitHub</span>
+              </a>
+            </li>
+            <li>
+              <a
+                href={navLinks.linkedin}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-200 hover:text-[#5a7fa4] transition-colors duration-150 flex items-center gap-2"
+              >
+                <Linkedin className="w-5 h-5" />
+                <span className="text-sm font-medium">LinkedIn</span>
+              </a>
+            </li>
+            <li>
+              <a
+                href={navLinks.contact}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-200 hover:text-[#5a7fa4] transition-colors duration-150 flex items-center gap-2"
+              >
+                <Mail className="w-5 h-5" />
+                <span className="text-sm font-medium">Contact</span>
+              </a>
+            </li>
           </ul>
 
           {/* RIGHT — theme toggle */}
@@ -224,75 +298,86 @@ export function Header() {
                     <MapPin className="w-3.5 h-3.5 text-[#3d5a80] dark:text-[#5a7fa4]" />
                     <span>{ipInfo.location}</span>
                   </div>
+                  {localTime && (
+                    <div className="flex items-center gap-2">
+                      <Clock className="w-3.5 h-3.5 text-[#3d5a80] dark:text-[#5a7fa4]" />
+                      <span className="font-mono">{localTime}</span>
+                    </div>
+                  )}
+                  {weather && (() => {
+                    const WeatherIcon = weatherIcon(weather.code);
+                    return (
+                      <div className="flex items-center gap-2">
+                        <WeatherIcon className="w-3.5 h-3.5 text-[#3d5a80] dark:text-[#5a7fa4]" />
+                        <span>{weather.tempF}°F</span>
+                      </div>
+                    );
+                  })()}
                 </div>
               </div>
 
               <ul className="flex flex-col gap-4">
-                {isHome ? (
-                  <>
-                    <li>
-                      <button
-                        onClick={() => scrollToSection("home")}
-                        className="flex items-center gap-3 w-full text-left text-gray-200 hover:text-[#5a7fa4] transition-colors duration-150 font-semibold py-2"
-                      >
-                        <Home className="w-5 h-5" />
-                        <span>Home</span>
-                      </button>
-                    </li>
-                    <li>
-                      <Link
-                        to="/about"
-                        className="flex items-center gap-3 text-gray-200 hover:text-[#5a7fa4] transition-colors duration-150 font-semibold py-2"
-                      >
-                        <User className="w-5 h-5" />
-                        <span>About</span>
-                      </Link>
-                    </li>
-                    <li>
-                      <a
-                        href={navLinks.github}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center gap-3 text-gray-200 hover:text-[#5a7fa4] transition-colors duration-150 font-semibold py-2"
-                      >
-                        <Github className="w-5 h-5" />
-                        <span>GitHub</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a
-                        href={navLinks.linkedin}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center gap-3 text-gray-200 hover:text-[#5a7fa4] transition-colors duration-150 font-semibold py-2"
-                      >
-                        <Linkedin className="w-5 h-5" />
-                        <span>LinkedIn</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a
-                        href={navLinks.contact}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center gap-3 text-gray-200 hover:text-[#5a7fa4] transition-colors duration-150 font-semibold py-2"
-                      >
-                        <Mail className="w-5 h-5" />
-                        <span>Contact</span>
-                      </a>
-                    </li>
-                  </>
-                ) : (
-                  <li>
+                <li>
+                  {isHome ? (
+                    <button
+                      onClick={() => scrollToSection("home")}
+                      className="flex items-center gap-3 w-full text-left text-gray-200 hover:text-[#5a7fa4] transition-colors duration-150 font-semibold py-2"
+                    >
+                      <Home className="w-5 h-5" />
+                      <span>Home</span>
+                    </button>
+                  ) : (
                     <Link
                       to="/"
                       className="flex items-center gap-3 text-gray-200 hover:text-[#5a7fa4] transition-colors duration-150 font-semibold py-2"
                     >
                       <Home className="w-5 h-5" />
-                      <span>Back to Home</span>
+                      <span>Home</span>
                     </Link>
-                  </li>
-                )}
+                  )}
+                </li>
+                <li>
+                  <Link
+                    to="/about"
+                    className="flex items-center gap-3 text-gray-200 hover:text-[#5a7fa4] transition-colors duration-150 font-semibold py-2"
+                  >
+                    <User className="w-5 h-5" />
+                    <span>About</span>
+                  </Link>
+                </li>
+                <li>
+                  <a
+                    href={navLinks.github}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-3 text-gray-200 hover:text-[#5a7fa4] transition-colors duration-150 font-semibold py-2"
+                  >
+                    <Github className="w-5 h-5" />
+                    <span>GitHub</span>
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href={navLinks.linkedin}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-3 text-gray-200 hover:text-[#5a7fa4] transition-colors duration-150 font-semibold py-2"
+                  >
+                    <Linkedin className="w-5 h-5" />
+                    <span>LinkedIn</span>
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href={navLinks.contact}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-3 text-gray-200 hover:text-[#5a7fa4] transition-colors duration-150 font-semibold py-2"
+                  >
+                    <Mail className="w-5 h-5" />
+                    <span>Contact</span>
+                  </a>
+                </li>
               </ul>
             </div>
           </motion.div>

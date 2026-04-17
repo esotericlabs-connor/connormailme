@@ -7,18 +7,28 @@ export function Footer() {
 
   return (
     <footer className="relative text-gray-200 py-8 overflow-hidden">
-      {/* Cross-fading Seattle background */}
+      {/* Fixed-attachment backgrounds align with the html overscroll canvas */}
       <motion.div
         animate={{ opacity: isDarkMode ? 1 : 0 }}
         transition={{ duration: 0.25 }}
-        className="absolute inset-0 bg-cover bg-center"
-        style={{ backgroundImage: "url(/assets/seattle-night.jpg)" }}
+        className="absolute inset-0"
+        style={{
+          backgroundImage: "url(/assets/seattle-night.jpg)",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundAttachment: "fixed",
+        }}
       />
       <motion.div
         animate={{ opacity: isDarkMode ? 0 : 1 }}
         transition={{ duration: 0.25 }}
-        className="absolute inset-0 bg-cover bg-center"
-        style={{ backgroundImage: "url(/assets/seattle-day.jpg)" }}
+        className="absolute inset-0"
+        style={{
+          backgroundImage: "url(/assets/seattle-day.jpg)",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundAttachment: "fixed",
+        }}
       />
       {/* Dark overlay so text stays readable */}
       <div className="absolute inset-0 bg-black/60" />
