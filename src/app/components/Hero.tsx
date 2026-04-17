@@ -1,15 +1,15 @@
 import { motion, AnimatePresence } from "motion/react";
 import { useTheme } from "./ThemeProvider";
+import { personal, hero } from "../../config";
 
 export function Hero() {
   const { isDarkMode } = useTheme();
-  
+
   return (
     <section
       id="home"
       className="relative min-h-[80vh] flex items-center justify-center pt-16 overflow-hidden"
     >
-      {/* Background Images with Fade Transition */}
       <AnimatePresence mode="wait" initial={false}>
         {isDarkMode ? (
           <motion.div
@@ -52,7 +52,7 @@ export function Hero() {
           transition={{ duration: 0.6, delay: 0.5 }}
           className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4"
         >
-          Connor Remsen
+          {personal.name}
         </motion.h1>
         <motion.p
           initial={{ opacity: 0, y: 20 }}
@@ -60,7 +60,7 @@ export function Hero() {
           transition={{ duration: 0.6, delay: 0.7 }}
           className="text-lg md:text-xl lg:text-2xl text-white mb-6 md:mb-8"
         >
-          Freelance IT & Security Engineer
+          {personal.title}
         </motion.p>
         <motion.a
           initial={{ opacity: 0, scale: 0.8 }}
@@ -68,26 +68,18 @@ export function Hero() {
           transition={{ duration: 0.5, delay: 0.9 }}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
-          href="https://form.jotform.com/260608732697063"
+          href={hero.ctaUrl}
           target="_blank"
           rel="noopener noreferrer"
           className="inline-block px-6 md:px-8 py-2.5 md:py-3 bg-[#3d5a80] hover:bg-[#2d5a4a] text-white font-semibold rounded-lg transition-colors duration-300"
         >
-          Request Support
+          {hero.ctaText}
         </motion.a>
       </motion.div>
 
-      {/* Animated geometric decoration */}
       <motion.div
-        animate={{
-          rotate: [0, 360],
-          scale: [1, 1.1, 1],
-        }}
-        transition={{
-          duration: 20,
-          repeat: Infinity,
-          ease: "linear",
-        }}
+        animate={{ rotate: [0, 360], scale: [1, 1.1, 1] }}
+        transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
         className="absolute right-10 bottom-10 w-32 h-32 border-4 border-white/20 rounded-lg opacity-30 hidden lg:block"
         style={{ transform: "rotate(45deg)" }}
       />

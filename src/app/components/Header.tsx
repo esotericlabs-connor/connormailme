@@ -3,6 +3,7 @@ import { useTheme } from "./ThemeProvider";
 import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router";
 import { motion, AnimatePresence } from "motion/react";
+import { navLinks } from "../../config";
 
 interface IPInfo {
   ip: string;
@@ -22,44 +23,54 @@ export function Header() {
   const location = useLocation();
 
   useEffect(() => {
-    // Close mobile menu when route changes
     setIsMobileMenuOpen(false);
   }, [location]);
 
   useEffect(() => {
-    // Prevent body scroll when mobile menu is open
     if (isMobileMenuOpen) {
-      document.body.style.overflow = 'hidden';
+      document.body.style.overflow = "hidden";
     } else {
-      document.body.style.overflow = 'unset';
+      document.body.style.overflow = "unset";
     }
-    
-    // Cleanup on unmount
     return () => {
-      document.body.style.overflow = 'unset';
+      document.body.style.overflow = "unset";
     };
   }, [isMobileMenuOpen]);
 
   useEffect(() => {
     const fetchIPInfo = async () => {
       try {
-        const ipRes = await fetch("https://ipapi.co/json/");
-        const ipData = await ipRes.json();
+        // Step 1: get public IP from a highly-compatible endpoint
+        const ipRes = await fetch("https://api.ipify.org?format=json");
+        const { ip } = await ipRes.json();
 
-        const ip: string = ipData.ip ?? "Unknown";
-        const city: string = ipData.city ?? "";
-        const region: string = ipData.region_code ?? ipData.region ?? "";
-        const location = city && region ? `${city}, ${region}` : city || region || ipData.country_name || "Unknown";
+        // Step 2: location lookup using the explicit IP
+        let location = "Unknown";
+        try {
+          const locRes = await fetch(`https://ipapi.co/${ip}/json/`);
+          const locData = await locRes.json();
+          const city: string = locData.city ?? "";
+          const region: string = locData.region_code ?? locData.region ?? "";
+          location =
+            city && region
+              ? `${city}, ${region}`
+              : city || region || locData.country_name || "Unknown";
+        } catch {
+          // location lookup failed, leave as Unknown
+        }
 
+        // Step 3: VPN / proxy detection
         let vpnDetected = false;
         try {
-          const vpnRes = await fetch(`https://proxycheck.io/v2/${ip}?vpn=1`);
+          const vpnRes = await fetch(
+            `https://proxycheck.io/v2/${ip}?vpn=1&asn=1`
+          );
           const vpnData = await vpnRes.json();
           if (vpnData[ip]) {
             vpnDetected = vpnData[ip].proxy === "yes";
           }
         } catch {
-          // VPN check failed, leave as false
+          // VPN check failed, default to false
         }
 
         setIpInfo({ ip, location, vpnDetected });
@@ -83,6 +94,9 @@ export function Header() {
 
   const isHome = location.pathname === "/";
 
+  const vpnLabel = isLoading ? "..." : ipInfo.vpnDetected ? "VPN On" : "VPN Off";
+  const vpnColor = ipInfo.vpnDetected ? "text-red-400" : "text-green-400";
+
   return (
     <motion.header
       initial={{ y: -100 }}
@@ -91,60 +105,53 @@ export function Header() {
       className="fixed top-0 left-0 right-0 z-50 bg-[#1a2332] dark:bg-[#0f1419] transition-colors duration-300 shadow-lg"
     >
       <nav className="container mx-auto px-4">
-        <div className="flex items-center justify-between h-16">
-          {/* Hamburger Menu Button - Mobile Only */}
-          <button
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="lg:hidden p-2 text-gray-200 hover:text-[#5a7fa4] transition-colors z-50"
-            aria-label="Toggle menu"
-          >
-            {isMobileMenuOpen ? (
-              <X className="w-6 h-6" />
-            ) : (
-              <Menu className="w-6 h-6" />
-            )}
-          </button>
+        {/* 3-column grid so nav is always truly centered */}
+        <div className="grid grid-cols-[1fr_auto_1fr] items-center h-16">
 
-          {/* IP Info - Left side on desktop, hidden on mobile */}
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.2 }}
-            className="hidden lg:flex items-center gap-4 text-xs text-gray-200"
-          >
-            <div className="flex items-center gap-1.5">
-              <Globe className="w-3.5 h-3.5 text-[#3d5a80] dark:text-[#5a7fa4]" />
-              <span className="font-mono">{ipInfo.ip}</span>
-            </div>
-            <div className="flex items-center gap-1.5">
-              <MapPin className="w-3.5 h-3.5 text-[#3d5a80] dark:text-[#5a7fa4]" />
-              <span>{ipInfo.location}</span>
-            </div>
-            <div className="flex items-center gap-1.5">
-              <Shield
-                className={`w-3.5 h-3.5 ${
-                  ipInfo.vpnDetected ? "text-red-400" : "text-green-400"
-                }`}
-              />
-              <span
-                className={`font-semibold ${
-                  ipInfo.vpnDetected ? "text-red-400" : "text-green-400"
-                }`}
-              >
-                {isLoading ? "..." : ipInfo.vpnDetected ? "VPN" : "Direct"}
-              </span>
-            </div>
-          </motion.div>
+          {/* LEFT — IP info (desktop) / hamburger (mobile) */}
+          <div className="flex items-center">
+            {/* Hamburger — mobile only */}
+            <button
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              className="lg:hidden p-2 text-gray-200 hover:text-[#5a7fa4] transition-colors z-50"
+              aria-label="Toggle menu"
+            >
+              {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            </button>
 
-          {/* Navigation - Center on desktop, mobile menu */}
+            {/* IP info — desktop only */}
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.2 }}
+              className="hidden lg:flex items-center gap-4 text-xs text-gray-200"
+            >
+              <div className="flex items-center gap-1.5">
+                <Globe className="w-3.5 h-3.5 text-[#3d5a80] dark:text-[#5a7fa4]" />
+                <span className="font-mono">{ipInfo.ip}</span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <MapPin className="w-3.5 h-3.5 text-[#3d5a80] dark:text-[#5a7fa4]" />
+                <span>{ipInfo.location}</span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <Shield className={`w-3.5 h-3.5 ${vpnColor}`} />
+                <span className={`font-semibold ${vpnColor}`}>{vpnLabel}</span>
+              </div>
+            </motion.div>
+          </div>
+
+          {/* CENTER — navigation */}
+          <div className="lg:hidden absolute left-1/2 -translate-x-1/2 text-gray-200 font-bold text-lg">
+            CR
+          </div>
           <ul className="hidden lg:flex items-center gap-8">
             {isHome ? (
               <>
                 <li>
                   <button
                     onClick={() => scrollToSection("home")}
-                    className="text-gray-200 hover:text-[#5a7fa4] transition-colors duration-300 flex items-center gap-2 group"
-                    title="Home"
+                    className="text-gray-200 hover:text-[#5a7fa4] transition-colors duration-300 flex items-center gap-2"
                   >
                     <Home className="w-5 h-5" />
                     <span className="text-sm font-medium">Home</span>
@@ -153,8 +160,7 @@ export function Header() {
                 <li>
                   <Link
                     to="/about"
-                    className="text-gray-200 hover:text-[#5a7fa4] transition-colors duration-300 flex items-center gap-2 group"
-                    title="About"
+                    className="text-gray-200 hover:text-[#5a7fa4] transition-colors duration-300 flex items-center gap-2"
                   >
                     <User className="w-5 h-5" />
                     <span className="text-sm font-medium">About</span>
@@ -162,11 +168,10 @@ export function Header() {
                 </li>
                 <li>
                   <a
-                    href="https://github.com/esotericlabs-connor"
+                    href={navLinks.github}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-gray-200 hover:text-[#5a7fa4] transition-colors duration-300 flex items-center gap-2 group"
-                    title="GitHub"
+                    className="text-gray-200 hover:text-[#5a7fa4] transition-colors duration-300 flex items-center gap-2"
                   >
                     <Github className="w-5 h-5" />
                     <span className="text-sm font-medium">GitHub</span>
@@ -174,11 +179,10 @@ export function Header() {
                 </li>
                 <li>
                   <a
-                    href="https://www.linkedin.com/in/connor-remsen1199/"
+                    href={navLinks.linkedin}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-gray-200 hover:text-[#5a7fa4] transition-colors duration-300 flex items-center gap-2 group"
-                    title="LinkedIn"
+                    className="text-gray-200 hover:text-[#5a7fa4] transition-colors duration-300 flex items-center gap-2"
                   >
                     <Linkedin className="w-5 h-5" />
                     <span className="text-sm font-medium">LinkedIn</span>
@@ -186,11 +190,10 @@ export function Header() {
                 </li>
                 <li>
                   <a
-                    href="https://form.jotform.com/260608732697063"
+                    href={navLinks.contact}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-gray-200 hover:text-[#5a7fa4] transition-colors duration-300 flex items-center gap-2 group"
-                    title="Contact"
+                    className="text-gray-200 hover:text-[#5a7fa4] transition-colors duration-300 flex items-center gap-2"
                   >
                     <Mail className="w-5 h-5" />
                     <span className="text-sm font-medium">Contact</span>
@@ -201,7 +204,7 @@ export function Header() {
               <li>
                 <Link
                   to="/"
-                  className="text-gray-200 hover:text-[#5a7fa4] transition-colors duration-300 flex items-center gap-2 group font-semibold"
+                  className="text-gray-200 hover:text-[#5a7fa4] transition-colors duration-300 flex items-center gap-2 font-semibold"
                 >
                   <Home className="w-5 h-5" />
                   <span className="text-sm">Back to Home</span>
@@ -210,25 +213,22 @@ export function Header() {
             )}
           </ul>
 
-          {/* Logo/Title - Center on mobile */}
-          <div className="lg:hidden absolute left-1/2 transform -translate-x-1/2 text-gray-200 font-bold text-lg">
-            CR
+          {/* RIGHT — theme toggle */}
+          <div className="flex justify-end">
+            <motion.button
+              whileHover={{ scale: 1.1, rotate: 15 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={toggleTheme}
+              className="p-2 text-gray-200 hover:text-[#5a7fa4] transition-colors duration-300"
+              aria-label="Toggle theme"
+            >
+              {isDarkMode ? <Sun className="w-6 h-6" /> : <Moon className="w-6 h-6" />}
+            </motion.button>
           </div>
-
-          {/* Theme Toggle - Right side */}
-          <motion.button
-            whileHover={{ scale: 1.1, rotate: 15 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={toggleTheme}
-            className="p-2 text-gray-200 hover:text-[#5a7fa4] transition-colors duration-300"
-            aria-label="Toggle theme"
-          >
-            {isDarkMode ? <Sun className="w-6 h-6" /> : <Moon className="w-6 h-6" />}
-          </motion.button>
         </div>
       </nav>
 
-      {/* Mobile Menu Overlay */}
+      {/* Mobile menu overlay */}
       <AnimatePresence>
         {isMobileMenuOpen && (
           <motion.div
@@ -239,7 +239,7 @@ export function Header() {
             className="lg:hidden bg-[#1a2332] dark:bg-[#0f1419] border-t border-gray-700"
           >
             <div className="container mx-auto px-4 py-4">
-              {/* IP Info in mobile menu */}
+              {/* IP info in mobile menu */}
               <div className="mb-4 pb-4 border-b border-gray-700">
                 <div className="flex flex-col gap-2 text-xs text-gray-200">
                   <div className="flex items-center gap-2">
@@ -251,23 +251,12 @@ export function Header() {
                     <span>{ipInfo.location}</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <Shield
-                      className={`w-3.5 h-3.5 ${
-                        ipInfo.vpnDetected ? "text-red-400" : "text-green-400"
-                      }`}
-                    />
-                    <span
-                      className={`font-semibold ${
-                        ipInfo.vpnDetected ? "text-red-400" : "text-green-400"
-                      }`}
-                    >
-                      {isLoading ? "..." : ipInfo.vpnDetected ? "VPN" : "Direct"}
-                    </span>
+                    <Shield className={`w-3.5 h-3.5 ${vpnColor}`} />
+                    <span className={`font-semibold ${vpnColor}`}>{vpnLabel}</span>
                   </div>
                 </div>
               </div>
 
-              {/* Mobile Navigation Links */}
               <ul className="flex flex-col gap-4">
                 {isHome ? (
                   <>
@@ -291,7 +280,7 @@ export function Header() {
                     </li>
                     <li>
                       <a
-                        href="https://github.com/esotericlabs-connor"
+                        href={navLinks.github}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="flex items-center gap-3 text-gray-200 hover:text-[#5a7fa4] transition-colors duration-300 font-semibold py-2"
@@ -302,7 +291,7 @@ export function Header() {
                     </li>
                     <li>
                       <a
-                        href="https://www.linkedin.com/in/connor-remsen1199/"
+                        href={navLinks.linkedin}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="flex items-center gap-3 text-gray-200 hover:text-[#5a7fa4] transition-colors duration-300 font-semibold py-2"
@@ -313,7 +302,7 @@ export function Header() {
                     </li>
                     <li>
                       <a
-                        href="https://form.jotform.com/260608732697063"
+                        href={navLinks.contact}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="flex items-center gap-3 text-gray-200 hover:text-[#5a7fa4] transition-colors duration-300 font-semibold py-2"
