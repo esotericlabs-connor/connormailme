@@ -8,7 +8,7 @@ export function Home() {
     <div>
       <Hero />
 
-      <section className="py-16 px-4 bg-white dark:bg-[#1a1f2e] transition-colors duration-300">
+      <section className="py-16 px-4 bg-white dark:bg-[#1a1f2e] transition-colors duration-150">
         <motion.div
           initial={{ opacity: 0, y: 12 }}
           whileInView={{ opacity: 1, y: 0 }}

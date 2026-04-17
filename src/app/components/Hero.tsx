@@ -1,4 +1,4 @@
-import { motion, AnimatePresence } from "motion/react";
+import { motion } from "motion/react";
 import { useTheme } from "./ThemeProvider";
 import { personal, hero } from "../../config";
 
@@ -10,35 +10,26 @@ export function Hero() {
       id="home"
       className="relative min-h-[80vh] flex items-center justify-center pt-16 overflow-hidden"
     >
-      <AnimatePresence mode="wait" initial={false}>
-        {isDarkMode ? (
-          <motion.div
-            key="dark"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.8 }}
-            className="absolute inset-0 bg-cover bg-center"
-            style={{
-              backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(/assets/seattle-night.jpg)`,
-              backgroundPosition: "center 40%",
-            }}
-          />
-        ) : (
-          <motion.div
-            key="light"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.8 }}
-            className="absolute inset-0 bg-cover bg-center"
-            style={{
-              backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url(/assets/seattle-day.jpg)`,
-              backgroundPosition: "center 40%",
-            }}
-          />
-        )}
-      </AnimatePresence>
+      <motion.div
+        initial={{ opacity: isDarkMode ? 1 : 0 }}
+        animate={{ opacity: isDarkMode ? 1 : 0 }}
+        transition={{ duration: 0.25 }}
+        className="absolute inset-0 bg-cover bg-center"
+        style={{
+          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(/assets/seattle-night.jpg)`,
+          backgroundPosition: "center 40%",
+        }}
+      />
+      <motion.div
+        initial={{ opacity: isDarkMode ? 0 : 1 }}
+        animate={{ opacity: isDarkMode ? 0 : 1 }}
+        transition={{ duration: 0.25 }}
+        className="absolute inset-0 bg-cover bg-center"
+        style={{
+          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url(/assets/seattle-day.jpg)`,
+          backgroundPosition: "center 40%",
+        }}
+      />
 
       <motion.div
         initial={{ opacity: 0, y: 50 }}
@@ -71,7 +62,7 @@ export function Hero() {
           href={hero.ctaUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-block px-6 md:px-8 py-2.5 md:py-3 bg-[#3d5a80] hover:bg-[#2d5a4a] text-white font-semibold rounded-lg transition-colors duration-300"
+          className="inline-block px-6 md:px-8 py-2.5 md:py-3 bg-[#3d5a80] hover:bg-[#2d5a4a] text-white font-semibold rounded-lg transition-colors duration-150"
         >
           {hero.ctaText}
         </motion.a>

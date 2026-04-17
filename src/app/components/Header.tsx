@@ -1,4 +1,4 @@
-import { Moon, Sun, Shield, MapPin, Globe, Menu, X, Home, User, Github, Linkedin, Mail } from "lucide-react";
+import { Moon, Sun, MapPin, Globe, Menu, X, Home, User, Github, Linkedin, Mail } from "lucide-react";
 import { useTheme } from "./ThemeProvider";
 import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router";
@@ -8,7 +8,6 @@ import { navLinks } from "../../config";
 interface IPInfo {
   ip: string;
   location: string;
-  vpnDetected: boolean;
 }
 
 export function Header() {
@@ -16,9 +15,7 @@ export function Header() {
   const [ipInfo, setIpInfo] = useState<IPInfo>({
     ip: "Loading...",
     location: "Loading...",
-    vpnDetected: false,
   });
-  const [isLoading, setIsLoading] = useState(true);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const location = useLocation();
 
@@ -59,25 +56,9 @@ export function Header() {
           // location lookup failed, leave as Unknown
         }
 
-        // Step 3: VPN / proxy detection
-        let vpnDetected = false;
-        try {
-          const vpnRes = await fetch(
-            `https://proxycheck.io/v2/${ip}?vpn=1&asn=1`
-          );
-          const vpnData = await vpnRes.json();
-          if (vpnData[ip]) {
-            vpnDetected = vpnData[ip].proxy === "yes";
-          }
-        } catch {
-          // VPN check failed, default to false
-        }
-
-        setIpInfo({ ip, location, vpnDetected });
+        setIpInfo({ ip, location });
       } catch {
-        setIpInfo({ ip: "Unknown", location: "Unknown", vpnDetected: false });
-      } finally {
-        setIsLoading(false);
+        setIpInfo({ ip: "Unknown", location: "Unknown" });
       }
     };
 
@@ -94,15 +75,12 @@ export function Header() {
 
   const isHome = location.pathname === "/";
 
-  const vpnLabel = isLoading ? "..." : ipInfo.vpnDetected ? "VPN On" : "VPN Off";
-  const vpnColor = ipInfo.vpnDetected ? "text-red-400" : "text-green-400";
-
   return (
     <motion.header
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ type: "spring", stiffness: 100 }}
-      className="fixed top-0 left-0 right-0 z-50 bg-[#1a2332] dark:bg-[#0f1419] transition-colors duration-300 shadow-lg"
+      className="fixed top-0 left-0 right-0 z-50 bg-[#1a2332] dark:bg-[#0f1419] transition-colors duration-150 shadow-lg"
     >
       <nav className="container mx-auto px-4">
         {/* 3-column grid so nav is always truly centered */}
@@ -134,10 +112,6 @@ export function Header() {
                 <MapPin className="w-3.5 h-3.5 text-[#3d5a80] dark:text-[#5a7fa4]" />
                 <span>{ipInfo.location}</span>
               </div>
-              <div className="flex items-center gap-1.5">
-                <Shield className={`w-3.5 h-3.5 ${vpnColor}`} />
-                <span className={`font-semibold ${vpnColor}`}>{vpnLabel}</span>
-              </div>
             </motion.div>
           </div>
 
@@ -151,7 +125,7 @@ export function Header() {
                 <li>
                   <button
                     onClick={() => scrollToSection("home")}
-                    className="text-gray-200 hover:text-[#5a7fa4] transition-colors duration-300 flex items-center gap-2"
+                    className="text-gray-200 hover:text-[#5a7fa4] transition-colors duration-150 flex items-center gap-2"
                   >
                     <Home className="w-5 h-5" />
                     <span className="text-sm font-medium">Home</span>
@@ -160,7 +134,7 @@ export function Header() {
                 <li>
                   <Link
                     to="/about"
-                    className="text-gray-200 hover:text-[#5a7fa4] transition-colors duration-300 flex items-center gap-2"
+                    className="text-gray-200 hover:text-[#5a7fa4] transition-colors duration-150 flex items-center gap-2"
                   >
                     <User className="w-5 h-5" />
                     <span className="text-sm font-medium">About</span>
@@ -171,7 +145,7 @@ export function Header() {
                     href={navLinks.github}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-gray-200 hover:text-[#5a7fa4] transition-colors duration-300 flex items-center gap-2"
+                    className="text-gray-200 hover:text-[#5a7fa4] transition-colors duration-150 flex items-center gap-2"
                   >
                     <Github className="w-5 h-5" />
                     <span className="text-sm font-medium">GitHub</span>
@@ -182,7 +156,7 @@ export function Header() {
                     href={navLinks.linkedin}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-gray-200 hover:text-[#5a7fa4] transition-colors duration-300 flex items-center gap-2"
+                    className="text-gray-200 hover:text-[#5a7fa4] transition-colors duration-150 flex items-center gap-2"
                   >
                     <Linkedin className="w-5 h-5" />
                     <span className="text-sm font-medium">LinkedIn</span>
@@ -193,7 +167,7 @@ export function Header() {
                     href={navLinks.contact}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-gray-200 hover:text-[#5a7fa4] transition-colors duration-300 flex items-center gap-2"
+                    className="text-gray-200 hover:text-[#5a7fa4] transition-colors duration-150 flex items-center gap-2"
                   >
                     <Mail className="w-5 h-5" />
                     <span className="text-sm font-medium">Contact</span>
@@ -204,7 +178,7 @@ export function Header() {
               <li>
                 <Link
                   to="/"
-                  className="text-gray-200 hover:text-[#5a7fa4] transition-colors duration-300 flex items-center gap-2 font-semibold"
+                  className="text-gray-200 hover:text-[#5a7fa4] transition-colors duration-150 flex items-center gap-2 font-semibold"
                 >
                   <Home className="w-5 h-5" />
                   <span className="text-sm">Back to Home</span>
@@ -219,7 +193,7 @@ export function Header() {
               whileHover={{ scale: 1.1, rotate: 15 }}
               whileTap={{ scale: 0.95 }}
               onClick={toggleTheme}
-              className="p-2 text-gray-200 hover:text-[#5a7fa4] transition-colors duration-300"
+              className="p-2 text-gray-200 hover:text-[#5a7fa4] transition-colors duration-150"
               aria-label="Toggle theme"
             >
               {isDarkMode ? <Sun className="w-6 h-6" /> : <Moon className="w-6 h-6" />}
@@ -250,10 +224,6 @@ export function Header() {
                     <MapPin className="w-3.5 h-3.5 text-[#3d5a80] dark:text-[#5a7fa4]" />
                     <span>{ipInfo.location}</span>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <Shield className={`w-3.5 h-3.5 ${vpnColor}`} />
-                    <span className={`font-semibold ${vpnColor}`}>{vpnLabel}</span>
-                  </div>
                 </div>
               </div>
 
@@ -263,7 +233,7 @@ export function Header() {
                     <li>
                       <button
                         onClick={() => scrollToSection("home")}
-                        className="flex items-center gap-3 w-full text-left text-gray-200 hover:text-[#5a7fa4] transition-colors duration-300 font-semibold py-2"
+                        className="flex items-center gap-3 w-full text-left text-gray-200 hover:text-[#5a7fa4] transition-colors duration-150 font-semibold py-2"
                       >
                         <Home className="w-5 h-5" />
                         <span>Home</span>
@@ -272,7 +242,7 @@ export function Header() {
                     <li>
                       <Link
                         to="/about"
-                        className="flex items-center gap-3 text-gray-200 hover:text-[#5a7fa4] transition-colors duration-300 font-semibold py-2"
+                        className="flex items-center gap-3 text-gray-200 hover:text-[#5a7fa4] transition-colors duration-150 font-semibold py-2"
                       >
                         <User className="w-5 h-5" />
                         <span>About</span>
@@ -283,7 +253,7 @@ export function Header() {
                         href={navLinks.github}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex items-center gap-3 text-gray-200 hover:text-[#5a7fa4] transition-colors duration-300 font-semibold py-2"
+                        className="flex items-center gap-3 text-gray-200 hover:text-[#5a7fa4] transition-colors duration-150 font-semibold py-2"
                       >
                         <Github className="w-5 h-5" />
                         <span>GitHub</span>
@@ -294,7 +264,7 @@ export function Header() {
                         href={navLinks.linkedin}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex items-center gap-3 text-gray-200 hover:text-[#5a7fa4] transition-colors duration-300 font-semibold py-2"
+                        className="flex items-center gap-3 text-gray-200 hover:text-[#5a7fa4] transition-colors duration-150 font-semibold py-2"
                       >
                         <Linkedin className="w-5 h-5" />
                         <span>LinkedIn</span>
@@ -305,7 +275,7 @@ export function Header() {
                         href={navLinks.contact}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex items-center gap-3 text-gray-200 hover:text-[#5a7fa4] transition-colors duration-300 font-semibold py-2"
+                        className="flex items-center gap-3 text-gray-200 hover:text-[#5a7fa4] transition-colors duration-150 font-semibold py-2"
                       >
                         <Mail className="w-5 h-5" />
                         <span>Contact</span>
@@ -316,7 +286,7 @@ export function Header() {
                   <li>
                     <Link
                       to="/"
-                      className="flex items-center gap-3 text-gray-200 hover:text-[#5a7fa4] transition-colors duration-300 font-semibold py-2"
+                      className="flex items-center gap-3 text-gray-200 hover:text-[#5a7fa4] transition-colors duration-150 font-semibold py-2"
                     >
                       <Home className="w-5 h-5" />
                       <span>Back to Home</span>

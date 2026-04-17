@@ -1,4 +1,4 @@
-import { motion, AnimatePresence } from "motion/react";
+import { motion } from "motion/react";
 import { Shield, Server, Brain, Lock, Code, Users, LucideIcon } from "lucide-react";
 import { useTheme } from "./ThemeProvider";
 import { about, expertise } from "../../config";
@@ -14,35 +14,26 @@ export function About() {
     <div className="pt-16">
       {/* Hero Section */}
       <section className="relative py-12 md:py-20 px-4 overflow-hidden">
-        <AnimatePresence mode="wait" initial={false}>
-          {isDarkMode ? (
-            <motion.div
-              key="dark-about"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.8 }}
-              className="absolute inset-0 bg-cover bg-center"
-              style={{
-                backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url(/assets/seattle-night.jpg)`,
-                backgroundPosition: "center 40%",
-              }}
-            />
-          ) : (
-            <motion.div
-              key="light-about"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.8 }}
-              className="absolute inset-0 bg-cover bg-center"
-              style={{
-                backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(/assets/seattle-day.jpg)`,
-                backgroundPosition: "center 40%",
-              }}
-            />
-          )}
-        </AnimatePresence>
+        <motion.div
+          initial={{ opacity: isDarkMode ? 1 : 0 }}
+          animate={{ opacity: isDarkMode ? 1 : 0 }}
+          transition={{ duration: 0.25 }}
+          className="absolute inset-0 bg-cover bg-center"
+          style={{
+            backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url(/assets/seattle-night.jpg)`,
+            backgroundPosition: "center 40%",
+          }}
+        />
+        <motion.div
+          initial={{ opacity: isDarkMode ? 0 : 1 }}
+          animate={{ opacity: isDarkMode ? 0 : 1 }}
+          transition={{ duration: 0.25 }}
+          className="absolute inset-0 bg-cover bg-center"
+          style={{
+            backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(/assets/seattle-day.jpg)`,
+            backgroundPosition: "center 40%",
+          }}
+        />
 
         <div className="container mx-auto max-w-4xl text-center relative z-10">
           <motion.h1
@@ -65,7 +56,7 @@ export function About() {
       </section>
 
       {/* Story Section */}
-      <section className="py-20 px-4 bg-white dark:bg-[#1a1f2e] transition-colors duration-300">
+      <section className="py-20 px-4 bg-white dark:bg-[#1a1f2e] transition-colors duration-150">
         <div className="container mx-auto max-w-4xl">
           <motion.div
             initial={{ opacity: 0, y: 12 }}
@@ -87,7 +78,7 @@ export function About() {
       </section>
 
       {/* Expertise Grid */}
-      <section className="py-20 px-4 bg-gray-100 dark:bg-[#24293a] transition-colors duration-300">
+      <section className="py-20 px-4 bg-gray-100 dark:bg-[#24293a] transition-colors duration-150">
         <div className="container mx-auto max-w-6xl">
           <motion.h2
             initial={{ opacity: 0, y: 12 }}
@@ -126,7 +117,7 @@ export function About() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 px-4 bg-white dark:bg-[#1a1f2e] transition-colors duration-300">
+      <section className="py-20 px-4 bg-white dark:bg-[#1a1f2e] transition-colors duration-150">
         <div className="container mx-auto max-w-3xl text-center">
           <motion.div
             initial={{ opacity: 0, y: 12 }}
@@ -146,7 +137,7 @@ export function About() {
               href={about.ctaUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-block px-8 py-3 bg-[#3d5a80] hover:bg-[#2d5a4a] text-white font-semibold rounded-lg transition-colors duration-300"
+              className="inline-block px-8 py-3 bg-[#3d5a80] hover:bg-[#2d5a4a] text-white font-semibold rounded-lg transition-colors duration-150"
             >
               {about.ctaText}
             </motion.a>

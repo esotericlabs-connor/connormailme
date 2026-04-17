@@ -6,7 +6,7 @@ export function Projects() {
   return (
     <section
       id="github"
-      className="py-20 px-4 bg-gray-100 dark:bg-[#24293a] transition-colors duration-300"
+      className="py-20 px-4 bg-gray-100 dark:bg-[#24293a] transition-colors duration-150"
     >
       <div className="container mx-auto max-w-6xl">
         <motion.h2
@@ -46,7 +46,7 @@ export function Projects() {
                   <h3 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
                     {project.title}
                   </h3>
-                  <Github className="w-6 h-6 text-gray-600 dark:text-gray-400 group-hover:text-[#5a7fa4] transition-colors duration-300" />
+                  <Github className="w-6 h-6 text-gray-600 dark:text-gray-400 group-hover:text-[#5a7fa4] transition-colors duration-150" />
                 </div>
                 <p className="text-gray-700 dark:text-gray-300 mb-4">
                   {project.description}
