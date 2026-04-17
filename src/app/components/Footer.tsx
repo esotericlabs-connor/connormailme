@@ -1,10 +1,29 @@
 import { Github, Linkedin } from "lucide-react";
 import { motion } from "motion/react";
+import { useTheme } from "./ThemeProvider";
 
 export function Footer() {
+  const { isDarkMode } = useTheme();
+
   return (
-    <footer className="bg-[#1a2332] dark:bg-[#0f1419] text-gray-200 py-8 transition-colors duration-150">
-      <div className="container mx-auto px-4 text-center">
+    <footer className="relative text-gray-200 py-8 overflow-hidden">
+      {/* Cross-fading Seattle background */}
+      <motion.div
+        animate={{ opacity: isDarkMode ? 1 : 0 }}
+        transition={{ duration: 0.25 }}
+        className="absolute inset-0 bg-cover bg-center"
+        style={{ backgroundImage: "url(/assets/seattle-night.jpg)" }}
+      />
+      <motion.div
+        animate={{ opacity: isDarkMode ? 0 : 1 }}
+        transition={{ duration: 0.25 }}
+        className="absolute inset-0 bg-cover bg-center"
+        style={{ backgroundImage: "url(/assets/seattle-day.jpg)" }}
+      />
+      {/* Dark overlay so text stays readable */}
+      <div className="absolute inset-0 bg-black/60" />
+
+      <div className="relative z-10 container mx-auto px-4 text-center">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}

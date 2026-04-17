@@ -5,15 +5,22 @@
 /* Custom styles for the portfolio */
 html {
   scroll-behavior: smooth;
+  background-image: url('/assets/seattle-day.jpg');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
+
+html.dark {
+  background-image: url('/assets/seattle-night.jpg');
 }
 
 body {
-  background-color: #ffffff;
+  background-color: transparent;
   color: #1a2332;
 }
 
 body.dark-mode {
-  background-color: #1a1f2e;
   color: #e8eaed;
 }
 
