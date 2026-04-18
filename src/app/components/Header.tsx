@@ -160,43 +160,48 @@ export function Header() {
               {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
             </button>
 
-            {/* IP info — desktop only */}
+            {/* IP info — desktop only, 2-row stacked layout */}
             <motion.div
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.2 }}
-              className="hidden lg:flex items-center gap-4 text-xs text-gray-200"
+              className="hidden lg:flex flex-col justify-center gap-0.5 text-sm text-gray-200"
             >
-              <div className="flex items-center gap-1.5">
-                <Globe className="w-3.5 h-3.5 text-[#3d5a80] dark:text-[#5a7fa4]" />
-                <span className="font-mono">{ipInfo.ip}</span>
-              </div>
-              <div className="flex items-center gap-1.5">
-                <MapPin className="w-3.5 h-3.5 text-[#3d5a80] dark:text-[#5a7fa4]" />
-                <span>{ipInfo.location}</span>
-              </div>
-              {localTime && (
+              {/* Row 1: IP + Location */}
+              <div className="flex items-center gap-4">
                 <div className="flex items-center gap-1.5">
-                  <Clock className="w-3.5 h-3.5 text-[#3d5a80] dark:text-[#5a7fa4]" />
-                  <span className="font-mono">{localTime}</span>
+                  <Globe className="w-3.5 h-3.5 text-[#3d5a80] dark:text-[#5a7fa4]" />
+                  <span className="font-mono">{ipInfo.ip}</span>
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <MapPin className="w-3.5 h-3.5 text-[#3d5a80] dark:text-[#5a7fa4]" />
+                  <span>{ipInfo.location}</span>
+                </div>
+              </div>
+              {/* Row 2: Time + Weather (renders once loaded) */}
+              {(localTime || weather) && (
+                <div className="flex items-center gap-4">
+                  {localTime && (
+                    <div className="flex items-center gap-1.5">
+                      <Clock className="w-3.5 h-3.5 text-[#3d5a80] dark:text-[#5a7fa4]" />
+                      <span className="font-mono">{localTime}</span>
+                    </div>
+                  )}
+                  {weather && (() => {
+                    const WeatherIcon = weatherIcon(weather.code);
+                    return (
+                      <div className="flex items-center gap-1.5">
+                        <WeatherIcon className="w-3.5 h-3.5 text-[#3d5a80] dark:text-[#5a7fa4]" />
+                        <span>{weather.tempF}°F</span>
+                      </div>
+                    );
+                  })()}
                 </div>
               )}
-              {weather && (() => {
-                const WeatherIcon = weatherIcon(weather.code);
-                return (
-                  <div className="flex items-center gap-1.5">
-                    <WeatherIcon className="w-3.5 h-3.5 text-[#3d5a80] dark:text-[#5a7fa4]" />
-                    <span>{weather.tempF}°F</span>
-                  </div>
-                );
-              })()}
             </motion.div>
           </div>
 
           {/* CENTER — navigation */}
-          <div className="lg:hidden absolute left-1/2 -translate-x-1/2 text-gray-200 font-bold text-lg">
-            CR
-          </div>
           <ul className="hidden lg:flex items-center gap-8">
             <li>
               {isHome ? (
@@ -261,8 +266,8 @@ export function Header() {
             </li>
           </ul>
 
-          {/* RIGHT — theme toggle */}
-          <div className="flex justify-end">
+          {/* RIGHT — theme toggle (col-start-3 keeps it right on mobile when center nav is hidden) */}
+          <div className="flex justify-end col-start-3">
             <motion.button
               whileHover={{ scale: 1.1, rotate: 15 }}
               whileTap={{ scale: 0.95 }}
