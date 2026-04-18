@@ -1,36 +1,10 @@
 import { Github, Linkedin } from "lucide-react";
 import { motion } from "motion/react";
-import { useTheme } from "./ThemeProvider";
 
 export function Footer() {
-  const { isDarkMode } = useTheme();
-
   return (
     <footer className="relative text-gray-200 py-8 overflow-hidden">
-      {/* Fixed-attachment backgrounds align with the html overscroll canvas */}
-      <motion.div
-        animate={{ opacity: isDarkMode ? 1 : 0 }}
-        transition={{ duration: 0.25 }}
-        className="absolute inset-0"
-        style={{
-          backgroundImage: "url(/assets/seattle-night.jpg)",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          backgroundAttachment: "fixed",
-        }}
-      />
-      <motion.div
-        animate={{ opacity: isDarkMode ? 0 : 1 }}
-        transition={{ duration: 0.25 }}
-        className="absolute inset-0"
-        style={{
-          backgroundImage: "url(/assets/seattle-day.jpg)",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          backgroundAttachment: "fixed",
-        }}
-      />
-      {/* Dark overlay so text stays readable */}
+      {/* Overlay only — BackgroundCanvas fixed layer shows through */}
       <div className="absolute inset-0 bg-black/60" />
 
       <div className="relative z-10 container mx-auto px-4 text-center">

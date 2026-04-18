@@ -68,12 +68,6 @@ export function Hero() {
         </motion.a>
       </motion.div>
 
-      <motion.div
-        animate={{ rotate: [0, 360], scale: [1, 1.1, 1] }}
-        transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-        className="absolute right-10 bottom-10 w-32 h-32 border-4 border-white/20 rounded-lg opacity-30 hidden lg:block"
-        style={{ transform: "rotate(45deg)" }}
-      />
     </section>
   );
 }
