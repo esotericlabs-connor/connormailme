@@ -1,4 +1,4 @@
-import { motion } from "motion/react";
+import { motion, AnimatePresence } from "motion/react";
 import { useTheme } from "./ThemeProvider";
 import { personal, hero } from "../../config";
 
