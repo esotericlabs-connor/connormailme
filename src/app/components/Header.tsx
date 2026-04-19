@@ -218,47 +218,43 @@ export function Header() {
             CR
           </div>
           <ul className="hidden lg:flex items-center gap-8">
-            {isHome ? (
-              <>
-                <li>
-                  <button onClick={() => scrollToSection("home")} className={navLinkClass}>
-                    <Home className="w-5 h-5" />
-                    <span className="text-sm font-medium">Home</span>
-                  </button>
-                </li>
-                <li>
-                  <Link to="/about" className={navLinkClass}>
-                    <User className="w-5 h-5" />
-                    <span className="text-sm font-medium">About</span>
-                  </Link>
-                </li>
-                <li>
-                  <a href={navLinks.github} target="_blank" rel="noopener noreferrer" className={navLinkClass}>
-                    <Github className="w-5 h-5" />
-                    <span className="text-sm font-medium">GitHub</span>
-                  </a>
-                </li>
-                <li>
-                  <a href={navLinks.linkedin} target="_blank" rel="noopener noreferrer" className={navLinkClass}>
-                    <Linkedin className="w-5 h-5" />
-                    <span className="text-sm font-medium">LinkedIn</span>
-                  </a>
-                </li>
-                <li>
-                  <a href={navLinks.contact} target="_blank" rel="noopener noreferrer" className={navLinkClass}>
-                    <Mail className="w-5 h-5" />
-                    <span className="text-sm font-medium">Contact</span>
-                  </a>
-                </li>
-              </>
-            ) : (
-              <li>
-                <Link to="/" className={`${navLinkClass} font-semibold`}>
+            <li>
+              {isHome ? (
+                <button onClick={() => scrollToSection("home")} className={navLinkClass}>
                   <Home className="w-5 h-5" />
-                  <span className="text-sm">Back to Home</span>
+                  <span className="text-sm font-medium">Home</span>
+                </button>
+              ) : (
+                <Link to="/" className={navLinkClass}>
+                  <Home className="w-5 h-5" />
+                  <span className="text-sm font-medium">Home</span>
                 </Link>
-              </li>
-            )}
+              )}
+            </li>
+            <li>
+              <Link to="/about" className={navLinkClass}>
+                <User className="w-5 h-5" />
+                <span className="text-sm font-medium">About</span>
+              </Link>
+            </li>
+            <li>
+              <a href={navLinks.github} target="_blank" rel="noopener noreferrer" className={navLinkClass}>
+                <Github className="w-5 h-5" />
+                <span className="text-sm font-medium">GitHub</span>
+              </a>
+            </li>
+            <li>
+              <a href={navLinks.linkedin} target="_blank" rel="noopener noreferrer" className={navLinkClass}>
+                <Linkedin className="w-5 h-5" />
+                <span className="text-sm font-medium">LinkedIn</span>
+              </a>
+            </li>
+            <li>
+              <a href={navLinks.contact} target="_blank" rel="noopener noreferrer" className={navLinkClass}>
+                <Mail className="w-5 h-5" />
+                <span className="text-sm font-medium">Contact</span>
+              </a>
+            </li>
           </ul>
 
           {/* RIGHT — theme toggle */}
@@ -319,44 +315,40 @@ export function Header() {
               </div>
 
               <ul className="flex flex-col gap-4">
-                {isHome ? (
-                  <>
-                    <li>
-                      <button
-                        onClick={() => scrollToSection("home")}
-                        className="flex items-center gap-3 w-full text-left text-[#1a2332] dark:text-gray-200 hover:text-[#3d5a80] dark:hover:text-[#5a7fa4] transition-colors duration-300 font-semibold py-2"
-                      >
-                        <Home className="w-5 h-5" /><span>Home</span>
-                      </button>
-                    </li>
-                    <li>
-                      <Link to="/about" className="flex items-center gap-3 text-[#1a2332] dark:text-gray-200 hover:text-[#3d5a80] dark:hover:text-[#5a7fa4] transition-colors duration-300 font-semibold py-2">
-                        <User className="w-5 h-5" /><span>About</span>
-                      </Link>
-                    </li>
-                    <li>
-                      <a href={navLinks.github} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 text-[#1a2332] dark:text-gray-200 hover:text-[#3d5a80] dark:hover:text-[#5a7fa4] transition-colors duration-300 font-semibold py-2">
-                        <Github className="w-5 h-5" /><span>GitHub</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a href={navLinks.linkedin} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 text-[#1a2332] dark:text-gray-200 hover:text-[#3d5a80] dark:hover:text-[#5a7fa4] transition-colors duration-300 font-semibold py-2">
-                        <Linkedin className="w-5 h-5" /><span>LinkedIn</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a href={navLinks.contact} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 text-[#1a2332] dark:text-gray-200 hover:text-[#3d5a80] dark:hover:text-[#5a7fa4] transition-colors duration-300 font-semibold py-2">
-                        <Mail className="w-5 h-5" /><span>Contact</span>
-                      </a>
-                    </li>
-                  </>
-                ) : (
-                  <li>
+                <li>
+                  {isHome ? (
+                    <button
+                      onClick={() => scrollToSection("home")}
+                      className="flex items-center gap-3 w-full text-left text-[#1a2332] dark:text-gray-200 hover:text-[#3d5a80] dark:hover:text-[#5a7fa4] transition-colors duration-300 font-semibold py-2"
+                    >
+                      <Home className="w-5 h-5" /><span>Home</span>
+                    </button>
+                  ) : (
                     <Link to="/" className="flex items-center gap-3 text-[#1a2332] dark:text-gray-200 hover:text-[#3d5a80] dark:hover:text-[#5a7fa4] transition-colors duration-300 font-semibold py-2">
-                      <Home className="w-5 h-5" /><span>Back to Home</span>
+                      <Home className="w-5 h-5" /><span>Home</span>
                     </Link>
-                  </li>
-                )}
+                  )}
+                </li>
+                <li>
+                  <Link to="/about" className="flex items-center gap-3 text-[#1a2332] dark:text-gray-200 hover:text-[#3d5a80] dark:hover:text-[#5a7fa4] transition-colors duration-300 font-semibold py-2">
+                    <User className="w-5 h-5" /><span>About</span>
+                  </Link>
+                </li>
+                <li>
+                  <a href={navLinks.github} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 text-[#1a2332] dark:text-gray-200 hover:text-[#3d5a80] dark:hover:text-[#5a7fa4] transition-colors duration-300 font-semibold py-2">
+                    <Github className="w-5 h-5" /><span>GitHub</span>
+                  </a>
+                </li>
+                <li>
+                  <a href={navLinks.linkedin} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 text-[#1a2332] dark:text-gray-200 hover:text-[#3d5a80] dark:hover:text-[#5a7fa4] transition-colors duration-300 font-semibold py-2">
+                    <Linkedin className="w-5 h-5" /><span>LinkedIn</span>
+                  </a>
+                </li>
+                <li>
+                  <a href={navLinks.contact} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 text-[#1a2332] dark:text-gray-200 hover:text-[#3d5a80] dark:hover:text-[#5a7fa4] transition-colors duration-300 font-semibold py-2">
+                    <Mail className="w-5 h-5" /><span>Contact</span>
+                  </a>
+                </li>
               </ul>
             </div>
           </motion.div>

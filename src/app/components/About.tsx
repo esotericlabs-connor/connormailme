@@ -1,5 +1,5 @@
 import { motion } from "motion/react";
-import { Shield, Server, Brain, Lock, Code, Users, LucideIcon } from "lucide-react";
+import { Shield, Server, Brain, Lock, Code, Users, LucideIcon, Download, FileText } from "lucide-react";
 import { useTheme } from "./ThemeProvider";
 import { about, expertise } from "../../config";
 
@@ -113,6 +113,43 @@ export function About() {
               );
             })}
           </div>
+        </div>
+      </section>
+
+      {/* Resume Section */}
+      <section className="py-20 px-4 bg-white dark:bg-[#1a1f2e] transition-colors duration-150">
+        <div className="container mx-auto max-w-4xl">
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.3 }}
+          >
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100 flex items-center gap-3">
+                <FileText className="w-8 h-8 text-[#3d5a80] dark:text-[#5a7fa4]" />
+                Resume
+              </h2>
+              <a
+                href="/assets/resume.pdf"
+                download
+                className="flex items-center gap-2 px-4 py-2 bg-[#3d5a80] hover:bg-[#2d4a6a] text-white text-sm font-semibold rounded-lg transition-colors duration-150"
+              >
+                <Download className="w-4 h-4" />
+                Download PDF
+              </a>
+            </div>
+            <div
+              className="w-full rounded-lg overflow-hidden border border-gray-200 dark:border-[#3d5a80] shadow-md"
+              style={{ height: "850px" }}
+            >
+              <iframe
+                src="/assets/resume.pdf"
+                className="w-full h-full"
+                title="Connor Remsen Resume"
+              />
+            </div>
+          </motion.div>
         </div>
       </section>
 
