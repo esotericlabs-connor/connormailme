@@ -4,7 +4,7 @@ import {
   Clock, Wind, Cloud, CloudRain, CloudSnow, Zap, CloudDrizzle,
 } from "lucide-react";
 import { useTheme } from "./ThemeProvider";
-import { useEffect, useState } from "react";
+import { useEffect, useState, type ComponentType } from "react";
 import { Link, useLocation } from "react-router";
 import { motion, AnimatePresence } from "motion/react";
 import { navLinks } from "../../config";
@@ -12,7 +12,24 @@ import { navLinks } from "../../config";
 interface IPInfo {
   ip: string;
   location: string;
-  vpnDetected: boolean;
+  timezone: string;
+  latitude: number;
+  longitude: number;
+}
+
+interface WeatherInfo {
+  tempF: number;
+  code: number;
+}
+
+function weatherIcon(code: number): ComponentType<{ className?: string }> {
+  if (code === 0) return Sun;
+  if (code <= 2) return CloudSun;
+  if (code === 3 || (code >= 45 && code <= 48)) return Cloud;
+  if (code >= 51 && code <= 67) return CloudRain;
+  if (code >= 80 && code <= 82) return CloudRain;
+  if ((code >= 71 && code <= 77) || code === 85 || code === 86) return CloudSnow;
+  return CloudLightning;
 }
 
 interface WeatherInfo {
@@ -45,12 +62,15 @@ export function Header() {
   const [ipInfo, setIpInfo] = useState<IPInfo>({
     ip: "Loading...",
     location: "Loading...",
-    vpnDetected: false,
+    timezone: "",
+    latitude: 0,
+    longitude: 0,
   });
   const [weather, setWeather] = useState<WeatherInfo | null>(null);
   const [aqi, setAqi] = useState<number | null>(null);
   const [currentTime, setCurrentTime] = useState("");
   const [isLoading, setIsLoading] = useState(true);
+  const [localTime, setLocalTime] = useState<string>("");
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const location = useLocation();
 
@@ -130,13 +150,29 @@ export function Header() {
 
         setIpInfo({ ip, location: locationStr, vpnDetected });
       } catch {
-        setIpInfo({ ip: "Unknown", location: "Unknown", vpnDetected: false });
-      } finally {
-        setIsLoading(false);
+        setIpInfo({ ip: "Unknown", location: "Unknown", timezone: "", latitude: 0, longitude: 0 });
       }
     };
     fetchAll();
   }, []);
+
+  // Live clock ticking in the visitor's detected timezone
+  useEffect(() => {
+    const tick = () => {
+      if (!ipInfo.timezone) return;
+      setLocalTime(
+        new Intl.DateTimeFormat("en-US", {
+          hour: "numeric",
+          minute: "2-digit",
+          hour12: true,
+          timeZone: ipInfo.timezone,
+        }).format(new Date())
+      );
+    };
+    tick();
+    const id = setInterval(tick, 1000);
+    return () => clearInterval(id);
+  }, [ipInfo.timezone]);
 
   const scrollToSection = (id: string) => {
     document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -211,6 +247,26 @@ export function Header() {
                   <span className={`font-semibold ${vpnColor}`}>{vpnLabel}</span>
                 </div>
               </div>
+              {/* Row 2: Time + Weather (renders once loaded) */}
+              {(localTime || weather) && (
+                <div className="flex items-center gap-4">
+                  {localTime && (
+                    <div className="flex items-center gap-1.5">
+                      <Clock className="w-3.5 h-3.5 text-[#3d5a80] dark:text-[#5a7fa4]" />
+                      <span className="font-mono">{localTime}</span>
+                    </div>
+                  )}
+                  {weather && (() => {
+                    const WeatherIcon = weatherIcon(weather.code);
+                    return (
+                      <div className="flex items-center gap-1.5">
+                        <WeatherIcon className="w-3.5 h-3.5 text-[#3d5a80] dark:text-[#5a7fa4]" />
+                        <span>{weather.tempF}°F</span>
+                      </div>
+                    );
+                  })()}
+                </div>
+              )}
             </motion.div>
           </div>
 
@@ -255,15 +311,72 @@ export function Header() {
             ) : (
               <li>
                 <Link to="/" className={`${navLinkClass} font-semibold`}>
+          <ul className="hidden lg:flex items-center gap-8">
+            <li>
+              {isHome ? (
+                <button
+                  onClick={() => scrollToSection("home")}
+                  className="text-gray-200 hover:text-[#5a7fa4] transition-colors duration-150 flex items-center gap-2"
+                >
                   <Home className="w-5 h-5" />
-                  <span className="text-sm">Back to Home</span>
+                  <span className="text-sm font-medium">Home</span>
+                </button>
+              ) : (
+                <Link
+                  to="/"
+                  className="text-gray-200 hover:text-[#5a7fa4] transition-colors duration-150 flex items-center gap-2"
+                >
+                  <Home className="w-5 h-5" />
+                  <span className="text-sm font-medium">Home</span>
                 </Link>
-              </li>
-            )}
+              )}
+            </li>
+            <li>
+              <Link
+                to="/about"
+                className="text-gray-200 hover:text-[#5a7fa4] transition-colors duration-150 flex items-center gap-2"
+              >
+                <User className="w-5 h-5" />
+                <span className="text-sm font-medium">About</span>
+              </Link>
+            </li>
+            <li>
+              <a
+                href={navLinks.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-200 hover:text-[#5a7fa4] transition-colors duration-150 flex items-center gap-2"
+              >
+                <Github className="w-5 h-5" />
+                <span className="text-sm font-medium">GitHub</span>
+              </a>
+            </li>
+            <li>
+              <a
+                href={navLinks.linkedin}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-200 hover:text-[#5a7fa4] transition-colors duration-150 flex items-center gap-2"
+              >
+                <Linkedin className="w-5 h-5" />
+                <span className="text-sm font-medium">LinkedIn</span>
+              </a>
+            </li>
+            <li>
+              <a
+                href={navLinks.contact}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-200 hover:text-[#5a7fa4] transition-colors duration-150 flex items-center gap-2"
+              >
+                <Mail className="w-5 h-5" />
+                <span className="text-sm font-medium">Contact</span>
+              </a>
+            </li>
           </ul>
 
-          {/* RIGHT — theme toggle */}
-          <div className="flex justify-end">
+          {/* RIGHT — theme toggle (col-start-3 keeps it right on mobile when center nav is hidden) */}
+          <div className="flex justify-end col-start-3">
             <motion.button
               whileHover={{ scale: 1.1, rotate: 15 }}
               whileTap={{ scale: 0.95 }}
@@ -356,8 +469,50 @@ export function Header() {
                     <Link to="/" className="flex items-center gap-3 text-[#1a2332] dark:text-gray-200 hover:text-[#3d5a80] dark:hover:text-[#5a7fa4] transition-colors duration-300 font-semibold py-2">
                       <Home className="w-5 h-5" /><span>Back to Home</span>
                     </Link>
-                  </li>
-                )}
+                  )}
+                </li>
+                <li>
+                  <Link
+                    to="/about"
+                    className="flex items-center gap-3 text-gray-200 hover:text-[#5a7fa4] transition-colors duration-150 font-semibold py-2"
+                  >
+                    <User className="w-5 h-5" />
+                    <span>About</span>
+                  </Link>
+                </li>
+                <li>
+                  <a
+                    href={navLinks.github}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-3 text-gray-200 hover:text-[#5a7fa4] transition-colors duration-150 font-semibold py-2"
+                  >
+                    <Github className="w-5 h-5" />
+                    <span>GitHub</span>
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href={navLinks.linkedin}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-3 text-gray-200 hover:text-[#5a7fa4] transition-colors duration-150 font-semibold py-2"
+                  >
+                    <Linkedin className="w-5 h-5" />
+                    <span>LinkedIn</span>
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href={navLinks.contact}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-3 text-gray-200 hover:text-[#5a7fa4] transition-colors duration-150 font-semibold py-2"
+                  >
+                    <Mail className="w-5 h-5" />
+                    <span>Contact</span>
+                  </a>
+                </li>
               </ul>
             </div>
           </motion.div>

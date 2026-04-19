@@ -8,26 +8,24 @@ html {
 }
 
 body {
-  background-color: #ffffff;
+  background-color: transparent;
   color: #1a2332;
 }
 
 body.dark-mode {
-  background-color: #1a1f2e;
   color: #e8eaed;
 }
 
-/* Ensure smooth transitions but not for transforms */
+/* Theme color transitions — opacity excluded to avoid fighting Framer Motion */
 * {
-  transition-property: background-color, border-color, color, opacity;
-  transition-duration: 300ms;
+  transition-property: background-color, border-color, color;
+  transition-duration: 150ms;
   transition-timing-function: ease-in-out;
 }
 
-/* Override for animations and transforms that shouldn't transition colors */
 [class*="animate-"],
 [class*="motion-"],
 button,
 a {
-  transition-property: background-color, border-color, color, opacity, transform, scale;
+  transition-property: background-color, border-color, color, transform, scale;
 }

@@ -31,7 +31,7 @@ export const about = {
     "Passionate about building secure, resilient systems that empower businesses to thrive in an increasingly complex digital landscape.",
 
   storyHeading: "Building Secure Solutions",
-  storyParagraphs: [
+  storyParagraphs: [                
     "Based in Seattle, I specialize in creating robust IT infrastructure and security solutions that meet the challenges of modern enterprises. With years of experience in security operations, network architecture, and private AI systems, I help organizations protect their most valuable assets while maintaining operational efficiency.",
     "My approach combines deep technical expertise with a practical understanding of business needs. Whether you're looking to secure your infrastructure, implement private AI solutions, or streamline your operations, I deliver solutions that are both technically sound and business-aligned.",
     "I believe in the power of open-source software and contribute to the community through projects like OpenKeyFlow and MONOLITH, helping others build more secure and efficient systems.",
