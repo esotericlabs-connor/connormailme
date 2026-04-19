@@ -1,4 +1,5 @@
-import { Github, Linkedin } from "lucide-react";
+import { Github, Linkedin, Mail } from "lucide-react";
+import { navLinks } from "../../config";
 import { motion } from "motion/react";
 
 export function Footer() {
@@ -33,6 +34,17 @@ export function Footer() {
             aria-label="LinkedIn"
           >
             <Linkedin className="w-6 h-6" />
+          </motion.a>
+          <motion.a
+            whileHover={{ scale: 1.2, rotate: 5 }}
+            whileTap={{ scale: 0.9 }}
+            href={navLinks.contact}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-gray-200 hover:text-[#5a7fa4] transition-colors duration-300"
+            aria-label="Contact"
+          >
+            <Mail className="w-6 h-6" />
           </motion.a>
         </motion.div>
         <p className="text-sm text-gray-300">

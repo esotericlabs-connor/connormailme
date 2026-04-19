@@ -21,7 +21,7 @@ export function Hero() {
             className="absolute inset-0 bg-cover bg-center"
             style={{
               backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(/assets/seattle-night.jpg)`,
-              backgroundPosition: "center 40%",
+              backgroundPosition: "50% 20%",
             }}
           />
         ) : (
@@ -34,7 +34,7 @@ export function Hero() {
             className="absolute inset-0 bg-cover bg-center"
             style={{
               backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url(/assets/seattle-day.jpg)`,
-              backgroundPosition: "center 40%",
+              backgroundPosition: "60% 30%",
             }}
           />
         )}
