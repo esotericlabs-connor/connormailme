@@ -1,5 +1,5 @@
 import {
-  Moon, Sun, Shield, MapPin, Globe, Menu, X,
+  Moon, Sun, MapPin, Globe, Menu, X,
   Home, User, Github, Linkedin, Mail,
   Clock, Wind, Cloud, CloudRain, CloudSnow, Zap, CloudDrizzle,
 } from "lucide-react";
@@ -12,7 +12,6 @@ import { navLinks } from "../../config";
 interface IPInfo {
   ip: string;
   location: string;
-  vpnDetected: boolean;
 }
 
 interface WeatherInfo {
@@ -45,12 +44,10 @@ export function Header() {
   const [ipInfo, setIpInfo] = useState<IPInfo>({
     ip: "Loading...",
     location: "Loading...",
-    vpnDetected: false,
   });
   const [weather, setWeather] = useState<WeatherInfo | null>(null);
   const [aqi, setAqi] = useState<number | null>(null);
   const [currentTime, setCurrentTime] = useState("");
-  const [isLoading, setIsLoading] = useState(true);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const location = useLocation();
 
@@ -101,13 +98,6 @@ export function Header() {
           lon = locData.longitude;
         } catch { /* location failed */ }
 
-        let vpnDetected = false;
-        try {
-          const vpnRes = await fetch(`https://proxycheck.io/v2/${ip}?vpn=1&asn=1`);
-          const vpnData = await vpnRes.json();
-          if (vpnData[ip]) vpnDetected = vpnData[ip].proxy === "yes";
-        } catch { /* vpn check failed */ }
-
         if (lat !== null && lon !== null) {
           try {
             const wRes = await fetch(
@@ -128,11 +118,9 @@ export function Header() {
           } catch { /* aqi failed */ }
         }
 
-        setIpInfo({ ip, location: locationStr, vpnDetected });
+        setIpInfo({ ip, location: locationStr });
       } catch {
-        setIpInfo({ ip: "Unknown", location: "Unknown", vpnDetected: false });
-      } finally {
-        setIsLoading(false);
+        setIpInfo({ ip: "Unknown", location: "Unknown" });
       }
     };
     fetchAll();
@@ -144,8 +132,6 @@ export function Header() {
   };
 
   const isHome = location.pathname === "/";
-  const vpnLabel = isLoading ? "..." : ipInfo.vpnDetected ? "VPN On" : "VPN Off";
-  const vpnColor = ipInfo.vpnDetected ? "text-red-500 dark:text-red-400" : "text-green-600 dark:text-green-400";
   const navLinkClass =
     "text-[#1a2332] dark:text-gray-200 hover:text-[#3d5a80] dark:hover:text-[#5a7fa4] transition-colors duration-300 flex items-center gap-2";
 
@@ -195,7 +181,7 @@ export function Header() {
                 )}
               </div>
 
-              {/* BOTTOM ROW: IP, Location, VPN */}
+              {/* BOTTOM ROW: IP, Location */}
               <div className="flex items-center gap-4">
                 <div className="flex items-center gap-1.5">
                   <Globe className="w-3.5 h-3.5 text-[#3d5a80] dark:text-[#5a7fa4]" />
@@ -204,10 +190,6 @@ export function Header() {
                 <div className="flex items-center gap-1.5">
                   <MapPin className="w-3.5 h-3.5 text-[#3d5a80] dark:text-[#5a7fa4]" />
                   <span>{ipInfo.location}</span>
-                </div>
-                <div className="flex items-center gap-1.5">
-                  <Shield className={`w-3.5 h-3.5 ${vpnColor}`} />
-                  <span className={`font-semibold ${vpnColor}`}>{vpnLabel}</span>
                 </div>
               </div>
             </motion.div>
@@ -307,10 +289,6 @@ export function Header() {
                 <div className="flex items-center gap-2">
                   <MapPin className="w-3.5 h-3.5 text-[#3d5a80] dark:text-[#5a7fa4]" />
                   <span>{ipInfo.location}</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Shield className={`w-3.5 h-3.5 ${vpnColor}`} />
-                  <span className={`font-semibold ${vpnColor}`}>{vpnLabel}</span>
                 </div>
               </div>
 

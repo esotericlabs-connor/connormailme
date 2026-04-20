@@ -2,18 +2,21 @@
   <!-- Background -->
   <rect width="32" height="32" rx="4" fill="#1a2332"/>
 
-  <!-- Spire -->
-  <polygon points="16,2 14.2,13 17.8,13" fill="#8ab4d4"/>
+  <!-- Business card body -->
+  <rect x="3" y="9" width="26" height="16" rx="2" fill="#3d5a80"/>
 
-  <!-- Upper observation deck -->
-  <rect x="8" y="12" width="16" height="3" rx="1.5" fill="#4a7fa4"/>
-  <rect x="6" y="14" width="20" height="2.5" rx="1" fill="#3d6a94"/>
+  <!-- Card shine/highlight -->
+  <rect x="3" y="9" width="26" height="5" rx="2" fill="#4a6d96"/>
+  <rect x="3" y="12" width="26" height="2" fill="#4a6d96"/>
 
-  <!-- Shaft -->
-  <rect x="14.5" y="16.5" width="3" height="10" fill="#8ab4d4"/>
+  <!-- Avatar circle (left side of card) -->
+  <circle cx="10" cy="17" r="3.5" fill="#1a2332" opacity="0.6"/>
+  <circle cx="10" cy="17" r="2.5" fill="#8ab4d4" opacity="0.8"/>
 
-  <!-- Three legs -->
-  <line x1="16" y1="26" x2="7" y2="31" stroke="#5a7fa4" stroke-width="2" stroke-linecap="round"/>
-  <line x1="16" y1="26" x2="25" y2="31" stroke="#5a7fa4" stroke-width="2" stroke-linecap="round"/>
-  <line x1="16" y1="26" x2="16" y2="31" stroke="#5a7fa4" stroke-width="2" stroke-linecap="round"/>
+  <!-- Name line -->
+  <rect x="16" y="14.5" width="10" height="2" rx="1" fill="white" opacity="0.9"/>
+
+  <!-- Sub-text lines -->
+  <rect x="16" y="18" width="7" height="1.5" rx="0.75" fill="white" opacity="0.5"/>
+  <rect x="16" y="21" width="9" height="1.5" rx="0.75" fill="white" opacity="0.5"/>
 </svg>
