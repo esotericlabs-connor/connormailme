@@ -1,4 +1,4 @@
-import { motion, AnimatePresence } from "motion/react";
+import { motion } from "motion/react";
 import { useTheme } from "./ThemeProvider";
 import { personal, hero } from "../../config";
 
@@ -10,35 +10,21 @@ export function Hero() {
       id="home"
       className="relative min-h-[80vh] flex items-center justify-center pt-16 overflow-hidden"
     >
-      <AnimatePresence mode="wait" initial={false}>
-        {isDarkMode ? (
-          <motion.div
-            key="dark"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.8 }}
-            className="absolute inset-0 bg-cover bg-center"
-            style={{
-              backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(/assets/seattle-night.jpg)`,
-              backgroundPosition: "50% 20%",
-            }}
-          />
-        ) : (
-          <motion.div
-            key="light"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.8 }}
-            className="absolute inset-0 bg-cover bg-center"
-            style={{
-              backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url(/assets/seattle-day.jpg)`,
-              backgroundPosition: "60% 30%",
-            }}
-          />
-        )}
-      </AnimatePresence>
+      {/* Day image — base layer, always mounted */}
+      <div
+        className="absolute inset-0 bg-cover bg-center"
+        style={{
+          backgroundImage: `linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url(/assets/seattle-day.jpg)`,
+        }}
+      />
+      {/* Night image — fades over the day image in dark mode */}
+      <div
+        className="absolute inset-0 bg-cover bg-center transition-opacity duration-700"
+        style={{
+          backgroundImage: `linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url(/assets/seattle-night.jpg)`,
+          opacity: isDarkMode ? 1 : 0,
+        }}
+      />
 
       <motion.div
         initial={{ opacity: 0, y: 50 }}

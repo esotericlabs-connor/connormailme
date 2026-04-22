@@ -196,9 +196,6 @@ export function Header() {
           </div>
 
           {/* CENTER — navigation */}
-          <div className="lg:hidden absolute left-1/2 -translate-x-1/2 text-[#1a2332] dark:text-gray-200 font-bold text-lg">
-            CR
-          </div>
           <ul className="hidden lg:flex items-center gap-8">
             <li>
               {isHome ? (
