@@ -40,7 +40,7 @@ export function Footer() {
           </motion.a>
         </motion.div>
         <p className="text-sm text-gray-300">
-          &copy; 2026 Connor Remsen. All rights reserved.
+          &copy; {new Date().getFullYear()} Connor Remsen. All rights reserved.
         </p>
       </div>
     </footer>

@@ -100,7 +100,7 @@ export function About() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, amount: 0.3 }}
                   transition={{ duration: 0.3, delay: index * 0.05 }}
-                  className="p-6 bg-white dark:bg-[#1a1f2e] rounded-lg shadow-md border border-gray-300 dark:border-[#3d5a80] transition-all duration-300 hover:border-[#5a7fa4] hover:shadow-[0_0_18px_rgba(61,90,128,0.45)]"
+                  className="p-6 bg-white dark:bg-[#1a1f2e] rounded-lg shadow-md border border-gray-300 dark:border-[#5a7fa4] transition-all duration-300 hover:border-[#5a7fa4] hover:shadow-[0_0_18px_rgba(61,90,128,0.45)]"
                 >
                   <Icon className="w-12 h-12 text-[#3d5a80] dark:text-[#5a7fa4] mb-4" />
                   <h3 className="text-xl font-bold mb-2 text-gray-900 dark:text-gray-100">
@@ -140,7 +140,7 @@ export function About() {
               </a>
             </div>
             <div
-              className="w-full rounded-lg overflow-hidden border border-gray-200 dark:border-[#3d5a80] shadow-md"
+              className="w-full rounded-lg overflow-hidden border border-gray-200 dark:border-[#5a7fa4] shadow-md"
               style={{ height: "850px" }}
             >
               <iframe
@@ -174,7 +174,7 @@ export function About() {
               href={about.ctaUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-block px-8 py-3 bg-[#3d5a80] hover:bg-[#2d5a4a] text-white font-semibold rounded-lg transition-colors duration-150"
+              className="inline-block px-8 py-3 bg-[#3d5a80] hover:bg-[#2d4a6a] text-white font-semibold rounded-lg transition-colors duration-150"
             >
               {about.ctaText}
             </motion.a>

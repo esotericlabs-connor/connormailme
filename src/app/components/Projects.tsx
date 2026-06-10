@@ -33,7 +33,7 @@ export function Projects() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.3 }}
                 transition={{ duration: 0.3, delay: index * 0.1 }}
-                className="group relative bg-white dark:bg-[#1a1f2e] rounded-lg overflow-hidden shadow-md border border-gray-300 dark:border-[#3d5a80] transition-all duration-300 hover:border-[#5a7fa4] hover:shadow-[0_0_18px_rgba(61,90,128,0.45)]"
+                className="group relative bg-white dark:bg-[#1a1f2e] rounded-lg overflow-hidden shadow-md border border-gray-300 dark:border-[#5a7fa4] transition-all duration-300 hover:border-[#5a7fa4] hover:shadow-[0_0_18px_rgba(61,90,128,0.45)]"
               >
                 <div className="relative h-48 overflow-hidden flex items-center justify-center bg-gradient-to-br from-gray-100 to-gray-200 dark:from-[#0f1419] dark:to-[#1a1f2e] p-8">
                   <img

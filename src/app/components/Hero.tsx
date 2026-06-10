@@ -12,6 +12,7 @@ export function Hero() {
     >
       {/* Day image — base layer, always mounted */}
       <div
+        aria-hidden="true"
         className="absolute inset-0 bg-cover bg-center"
         style={{
           backgroundImage: `linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url(/assets/seattle-day.jpg)`,
@@ -19,6 +20,7 @@ export function Hero() {
       />
       {/* Night image — fades over the day image in dark mode */}
       <div
+        aria-hidden="true"
         className="absolute inset-0 bg-cover bg-center transition-opacity duration-700"
         style={{
           backgroundImage: `linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url(/assets/seattle-night.jpg)`,
@@ -65,7 +67,7 @@ export function Hero() {
           href={hero.ctaUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-block px-6 md:px-8 py-2.5 md:py-3 bg-[#3d5a80] hover:bg-[#2d5a4a] text-white font-semibold rounded-lg transition-colors duration-150"
+          className="inline-block px-6 md:px-8 py-2.5 md:py-3 bg-[#3d5a80] hover:bg-[#2d4a6a] text-white font-semibold rounded-lg transition-colors duration-150"
         >
           {hero.ctaText}
         </motion.a>

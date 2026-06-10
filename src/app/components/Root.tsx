@@ -7,7 +7,7 @@ import { motion } from "motion/react";
 function BackgroundCanvas() {
   const { isDarkMode } = useTheme();
   return (
-    <div className="fixed inset-0 -z-10">
+    <div aria-hidden="true" className="fixed inset-0 -z-10">
       <motion.div
         initial={{ opacity: isDarkMode ? 1 : 0 }}
         animate={{ opacity: isDarkMode ? 1 : 0 }}

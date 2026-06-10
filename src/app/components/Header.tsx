@@ -42,8 +42,8 @@ function aqiColor(aqi: number) {
 export function Header() {
   const { isDarkMode, toggleTheme } = useTheme();
   const [ipInfo, setIpInfo] = useState<IPInfo>({
-    ip: "Loading...",
-    location: "Loading...",
+    ip: "—",
+    location: "—",
   });
   const [weather, setWeather] = useState<WeatherInfo | null>(null);
   const [aqi, setAqi] = useState<number | null>(null);
@@ -120,7 +120,7 @@ export function Header() {
 
         setIpInfo({ ip, location: locationStr });
       } catch {
-        setIpInfo({ ip: "Unknown", location: "Unknown" });
+        setIpInfo({ ip: "—", location: "—" });
       }
     };
     fetchAll();
@@ -134,6 +134,13 @@ export function Header() {
   const isHome = location.pathname === "/";
   const navLinkClass =
     "text-[#1a2332] dark:text-gray-200 hover:text-[#3d5a80] dark:hover:text-[#5a7fa4] transition-colors duration-300 flex items-center gap-2";
+  const mobileLinkClass =
+    "flex items-center gap-3 text-[#1a2332] dark:text-gray-200 hover:text-[#3d5a80] dark:hover:text-[#5a7fa4] transition-colors duration-300 font-semibold py-2";
+  const sharedNavItems = [
+    { label: "About",   Icon: User,   to: "/about",        external: false },
+    { label: "GitHub",  Icon: Github, to: navLinks.github,  external: true  },
+    { label: "Contact", Icon: Mail,   to: navLinks.contact, external: true  },
+  ] as const;
 
   return (
     <motion.header
@@ -167,17 +174,21 @@ export function Header() {
                   <Clock className="w-3.5 h-3.5 text-[#3d5a80] dark:text-[#5a7fa4]" />
                   <span className="font-mono">{currentTime}</span>
                 </div>
-                {weather && (
+                {weather ? (
                   <div className="flex items-center gap-1.5">
                     <WeatherIcon code={weather.code} />
                     <span>{weather.temp}°F</span>
                   </div>
+                ) : (
+                  <span>—°F</span>
                 )}
-                {aqi !== null && (
+                {aqi !== null ? (
                   <div className="flex items-center gap-1.5">
                     <Wind className={`w-3.5 h-3.5 ${aqiColor(aqi)}`} />
                     <span className={`font-semibold ${aqiColor(aqi)}`}>AQI {aqi}</span>
                   </div>
+                ) : (
+                  <span>AQI —</span>
                 )}
               </div>
 
@@ -210,24 +221,21 @@ export function Header() {
                 </Link>
               )}
             </li>
-            <li>
-              <Link to="/about" className={navLinkClass}>
-                <User className="w-5 h-5" />
-                <span className="text-sm font-medium">About</span>
-              </Link>
-            </li>
-            <li>
-              <a href={navLinks.github} target="_blank" rel="noopener noreferrer" className={navLinkClass}>
-                <Github className="w-5 h-5" />
-                <span className="text-sm font-medium">GitHub</span>
-              </a>
-            </li>
-            <li>
-              <a href={navLinks.contact} target="_blank" rel="noopener noreferrer" className={navLinkClass}>
-                <Mail className="w-5 h-5" />
-                <span className="text-sm font-medium">Contact</span>
-              </a>
-            </li>
+            {sharedNavItems.map(({ label, Icon, to, external }) => (
+              <li key={label}>
+                {external ? (
+                  <a href={to} target="_blank" rel="noopener noreferrer" className={navLinkClass}>
+                    <Icon className="w-5 h-5" />
+                    <span className="text-sm font-medium">{label}</span>
+                  </a>
+                ) : (
+                  <Link to={to} className={navLinkClass}>
+                    <Icon className="w-5 h-5" />
+                    <span className="text-sm font-medium">{label}</span>
+                  </Link>
+                )}
+              </li>
+            ))}
           </ul>
 
           {/* RIGHT — theme toggle */}
@@ -261,17 +269,21 @@ export function Header() {
                   <Clock className="w-3.5 h-3.5 text-[#3d5a80] dark:text-[#5a7fa4]" />
                   <span className="font-mono">{currentTime}</span>
                 </div>
-                {weather && (
+                {weather ? (
                   <div className="flex items-center gap-2">
                     <WeatherIcon code={weather.code} />
                     <span>{weather.temp}°F</span>
                   </div>
+                ) : (
+                  <span>—°F</span>
                 )}
-                {aqi !== null && (
+                {aqi !== null ? (
                   <div className="flex items-center gap-2">
                     <Wind className={`w-3.5 h-3.5 ${aqiColor(aqi)}`} />
                     <span className={`font-semibold ${aqiColor(aqi)}`}>AQI {aqi}</span>
                   </div>
+                ) : (
+                  <span>AQI —</span>
                 )}
                 <div className="flex items-center gap-2 mt-1">
                   <Globe className="w-3.5 h-3.5 text-[#3d5a80] dark:text-[#5a7fa4]" />
@@ -298,21 +310,19 @@ export function Header() {
                     </Link>
                   )}
                 </li>
-                <li>
-                  <Link to="/about" className="flex items-center gap-3 text-[#1a2332] dark:text-gray-200 hover:text-[#3d5a80] dark:hover:text-[#5a7fa4] transition-colors duration-300 font-semibold py-2">
-                    <User className="w-5 h-5" /><span>About</span>
-                  </Link>
-                </li>
-                <li>
-                  <a href={navLinks.github} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 text-[#1a2332] dark:text-gray-200 hover:text-[#3d5a80] dark:hover:text-[#5a7fa4] transition-colors duration-300 font-semibold py-2">
-                    <Github className="w-5 h-5" /><span>GitHub</span>
-                  </a>
-                </li>
-                <li>
-                  <a href={navLinks.contact} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 text-[#1a2332] dark:text-gray-200 hover:text-[#3d5a80] dark:hover:text-[#5a7fa4] transition-colors duration-300 font-semibold py-2">
-                    <Mail className="w-5 h-5" /><span>Contact</span>
-                  </a>
-                </li>
+                {sharedNavItems.map(({ label, Icon, to, external }) => (
+                  <li key={label}>
+                    {external ? (
+                      <a href={to} target="_blank" rel="noopener noreferrer" className={mobileLinkClass}>
+                        <Icon className="w-5 h-5" /><span>{label}</span>
+                      </a>
+                    ) : (
+                      <Link to={to} className={mobileLinkClass}>
+                        <Icon className="w-5 h-5" /><span>{label}</span>
+                      </Link>
+                    )}
+                  </li>
+                ))}
               </ul>
             </div>
           </motion.div>
