@@ -1,6 +1,6 @@
 import {
   Moon, Sun, MapPin, Globe, Menu, X,
-  Home, User, Github, Linkedin, Mail,
+  Home, User, Github, Mail,
   Clock, Wind, Cloud, CloudRain, CloudSnow, Zap, CloudDrizzle,
 } from "lucide-react";
 import { useTheme } from "./ThemeProvider";
@@ -223,12 +223,6 @@ export function Header() {
               </a>
             </li>
             <li>
-              <a href={navLinks.linkedin} target="_blank" rel="noopener noreferrer" className={navLinkClass}>
-                <Linkedin className="w-5 h-5" />
-                <span className="text-sm font-medium">LinkedIn</span>
-              </a>
-            </li>
-            <li>
               <a href={navLinks.contact} target="_blank" rel="noopener noreferrer" className={navLinkClass}>
                 <Mail className="w-5 h-5" />
                 <span className="text-sm font-medium">Contact</span>
@@ -312,11 +306,6 @@ export function Header() {
                 <li>
                   <a href={navLinks.github} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 text-[#1a2332] dark:text-gray-200 hover:text-[#3d5a80] dark:hover:text-[#5a7fa4] transition-colors duration-300 font-semibold py-2">
                     <Github className="w-5 h-5" /><span>GitHub</span>
-                  </a>
-                </li>
-                <li>
-                  <a href={navLinks.linkedin} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 text-[#1a2332] dark:text-gray-200 hover:text-[#3d5a80] dark:hover:text-[#5a7fa4] transition-colors duration-300 font-semibold py-2">
-                    <Linkedin className="w-5 h-5" /><span>LinkedIn</span>
                   </a>
                 </li>
                 <li>

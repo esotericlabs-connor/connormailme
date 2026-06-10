@@ -14,7 +14,6 @@ export const personal = {
 // ------ Navigation links -------------------------------------
 export const navLinks = {
   github: "https://github.com/esotericlabs-connor",
-  linkedin: "https://www.linkedin.com/in/connor-remsen1199/",
   contact: "https://form.jotform.com/260608732697063",
 };
 
@@ -81,6 +80,23 @@ export const expertise = [
 
 // ------ Featured projects ------------------------------------
 export const projects = [
+  {
+    title: "GovMap",
+    description:
+      "A free, nonpartisan civic platform giving every American a real-time view of their entire government — from city council to Congress. Work in progress.",
+    logo: "/assets/govmap-logo.png",
+    link: "https://demo.govmap.us",
+    linkLabel: "View Demo",
+    wip: true,
+  },
+  {
+    title: "ADR — Automated Diagnostic Report",
+    description:
+      "Standalone diagnostic scripts for Windows, Mac, and Linux that give repair shops and MSPs automated hardware and software reports. Work in progress.",
+    logo: "/assets/adr-logo.png",
+    link: "https://github.com/esotericlabs-connor/ADR",
+    wip: true,
+  },
   {
     title: "OpenKeyFlow",
     description:

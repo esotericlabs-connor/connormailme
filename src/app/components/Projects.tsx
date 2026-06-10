@@ -20,44 +20,56 @@ export function Projects() {
         </motion.h2>
 
         <div className="grid md:grid-cols-2 gap-8">
-          {projects.map((project, index) => (
-            <motion.a
-              key={project.title}
-              href={project.link}
-              target="_blank"
-              rel="noopener noreferrer"
-              initial={{ opacity: 0, y: 12 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.3, delay: index * 0.1 }}
-              className="group relative bg-white dark:bg-[#1a1f2e] rounded-lg overflow-hidden shadow-md border border-gray-300 dark:border-[#3d5a80] transition-all duration-300 hover:border-[#5a7fa4] hover:shadow-[0_0_18px_rgba(61,90,128,0.45)]"
-            >
-              <div className="relative h-48 overflow-hidden flex items-center justify-center bg-gradient-to-br from-gray-100 to-gray-200 dark:from-[#0f1419] dark:to-[#1a1f2e] p-8">
-                <img
-                  src={project.logo}
-                  alt={project.title}
-                  loading="eager"
-                  className="max-w-full max-h-full object-contain"
-                />
-              </div>
+          {projects.map((project, index) => {
+            const isGithub = project.link.includes("github.com");
+            const linkLabel = project.linkLabel ?? "View on GitHub";
+            return (
+              <motion.a
+                key={project.title}
+                href={project.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                initial={{ opacity: 0, y: 12 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.3 }}
+                transition={{ duration: 0.3, delay: index * 0.1 }}
+                className="group relative bg-white dark:bg-[#1a1f2e] rounded-lg overflow-hidden shadow-md border border-gray-300 dark:border-[#3d5a80] transition-all duration-300 hover:border-[#5a7fa4] hover:shadow-[0_0_18px_rgba(61,90,128,0.45)]"
+              >
+                <div className="relative h-48 overflow-hidden flex items-center justify-center bg-gradient-to-br from-gray-100 to-gray-200 dark:from-[#0f1419] dark:to-[#1a1f2e] p-8">
+                  <img
+                    src={project.logo}
+                    alt={project.title}
+                    loading="eager"
+                    className="max-w-full max-h-full object-contain"
+                  />
+                  {project.wip && (
+                    <span className="absolute top-3 right-3 bg-amber-500 text-white text-xs font-bold px-2 py-1 rounded-full pointer-events-none">
+                      Work in Progress
+                    </span>
+                  )}
+                </div>
 
-              <div className="p-6">
-                <div className="flex items-center justify-between mb-3">
-                  <h3 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
-                    {project.title}
-                  </h3>
-                  <Github className="w-6 h-6 text-gray-600 dark:text-gray-400 group-hover:text-[#5a7fa4] transition-colors duration-150" />
+                <div className="p-6">
+                  <div className="flex items-center justify-between mb-3">
+                    <h3 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
+                      {project.title}
+                    </h3>
+                    {isGithub
+                      ? <Github className="w-6 h-6 text-gray-600 dark:text-gray-400 group-hover:text-[#5a7fa4] transition-colors duration-150" />
+                      : <ExternalLink className="w-6 h-6 text-gray-600 dark:text-gray-400 group-hover:text-[#5a7fa4] transition-colors duration-150" />
+                    }
+                  </div>
+                  <p className="text-gray-700 dark:text-gray-300 mb-4">
+                    {project.description}
+                  </p>
+                  <div className="flex items-center gap-1 text-[#3d5a80] dark:text-[#5a7fa4] font-semibold">
+                    {linkLabel}
+                    <ExternalLink className="w-4 h-4" />
+                  </div>
                 </div>
-                <p className="text-gray-700 dark:text-gray-300 mb-4">
-                  {project.description}
-                </p>
-                <div className="flex items-center gap-1 text-[#3d5a80] dark:text-[#5a7fa4] font-semibold">
-                  View on GitHub
-                  <ExternalLink className="w-4 h-4" />
-                </div>
-              </div>
-            </motion.a>
-          ))}
+              </motion.a>
+            );
+          })}
         </div>
       </div>
     </section>
