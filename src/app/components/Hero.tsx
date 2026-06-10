@@ -44,9 +44,17 @@ export function Hero() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.7 }}
-          className="text-lg md:text-xl lg:text-2xl text-white mb-6 md:mb-8"
+          className="text-lg md:text-xl lg:text-2xl text-white mb-2"
         >
           {personal.title}
+        </motion.p>
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.85 }}
+          className="text-base md:text-lg text-white/70 mb-6 md:mb-8"
+        >
+          {personal.subtitle}
         </motion.p>
         <motion.a
           initial={{ opacity: 0, scale: 0.8 }}

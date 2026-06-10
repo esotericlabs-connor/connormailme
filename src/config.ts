@@ -5,7 +5,8 @@
 // ------ Personal info ----------------------------------------
 export const personal = {
   name: "Connor Remsen",
-  title: "Freelance IT & Security Engineer",
+  title: "IT & Security Engineer",
+  subtitle: "Founder of Esoteric Labs",
   location: "Seattle, WA",
   tagline:
     "Seattle-based specialist in IT infrastructure, security operations, and private AI intelligence. With a focus on robust, efficient solutions, I help clients streamline their systems, maintain control, and protect their digital assets with cutting-edge security practices.",
