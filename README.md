@@ -1,6 +1,6 @@
 # Connor Remsen - Portfolio Website
 
-A modern portfolio website showcasing projects and professional information with a Pacific Northwest theme.
+A modern portfolio website.
 
 ## Tech Stack
 
