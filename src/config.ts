@@ -86,7 +86,7 @@ export const projects = [
     description:
       "A free, nonpartisan civic platform giving every American a real-time view of their entire government — from city council to Congress. Work in progress.",
     logo: "/assets/govmap-logo.png",
-    link: "https://demo.govmap.us",
+    link: "https://govmap.us",
     linkLabel: "View Demo",
     wip: true,
   },
